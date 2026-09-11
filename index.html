@@ -173,17 +173,12 @@ th{
 td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 
-.spec-table td.num input{
-  width:78px;padding:5px 7px;border:1px solid var(--border);border-radius:6px;
-  background:var(--surface);color:var(--text);font-family:"IBM Plex Mono",monospace;
-  font-size:13px;text-align:right;
-}
-.spec-table td.num input:focus{outline:2px solid var(--brand);outline-offset:1px;}
 .spec-table .item-label{font-weight:600;}
-.spec-table .unit{color:var(--text-dim);font-size:11.5px;}
+.spec-table .qual-badge{font-size:11px;color:var(--warn);background:var(--warn-bg);padding:2px 7px;border-radius:99px;}
 .spec-hint{
   font-family:"IBM Plex Mono",monospace;color:var(--text-dim);font-size:12px;white-space:nowrap;
 }
+.spec-empty{padding:24px 8px;text-align:center;color:var(--text-dim);font-size:12.5px;}
 
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .form-row.single{grid-template-columns:1fr;}
@@ -208,8 +203,8 @@ input[type=text]:focus,input[type=date]:focus{outline:2px solid var(--brand);out
 .measure-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;}
 @media (max-width:560px){.measure-grid{grid-template-columns:1fr 1fr;}}
 .m-field{border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface-2);}
-.m-field label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-dim);margin-bottom:5px;}
-.m-field label .unit{font-family:"IBM Plex Mono",monospace;}
+.m-field label{display:flex;align-items:flex-start;font-size:11.5px;color:var(--text-dim);margin-bottom:5px;line-height:1.3;}
+.m-field label .lbl-text{flex:1;}
 .m-field input{
   width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 7px;
   background:var(--surface);color:var(--text);font-family:"IBM Plex Mono",monospace;font-size:14px;
@@ -219,6 +214,10 @@ input[type=text]:focus,input[type=date]:focus{outline:2px solid var(--brand);out
 .m-field input.ok{border-color:var(--good);}
 .m-field input.bad{border-color:var(--bad);background:var(--bad-bg);}
 .m-field .hint{font-size:10.5px;color:var(--text-dim);margin-top:4px;font-family:"IBM Plex Mono",monospace;}
+.qual-toggle{display:flex;gap:6px;}
+.qual-toggle button{flex:1;padding:6px 4px;border-radius:6px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--text-dim);}
+.qual-toggle button.pass.active{background:var(--good-bg);border-color:var(--good);color:var(--good);}
+.qual-toggle button.fail.active{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
 
 .result-banner{
   margin-top:2px;margin-bottom:14px;border-radius:9px;padding:12px 14px;
@@ -230,20 +229,13 @@ input[type=text]:focus,input[type=date]:focus{outline:2px solid var(--brand);out
 .result-banner .rb-title{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;letter-spacing:.02em;}
 .result-banner .rb-sub{font-size:12px;opacity:.85;}
 
-.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
-.filters select{
-  padding:7px 9px;border:1px solid var(--border);border-radius:7px;background:var(--surface);
-  color:var(--text);font-size:12.5px;
-}
-.filters input[type=text]{max-width:220px;padding:7px 10px;font-size:12.5px;}
-
 .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:11.5px;font-weight:600;white-space:nowrap;}
 .pill.water{background:var(--water-bg);color:var(--water);}
 .pill.oil{background:var(--oil-bg);color:var(--oil);}
 .pill.pass{background:var(--good-bg);color:var(--good);}
 .pill.fail{background:var(--bad-bg);color:var(--bad);}
 
-.dots{display:flex;gap:3px;}
+.dots{display:flex;gap:3px;flex-wrap:wrap;}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
 .dot.pass{background:var(--good);}
 .dot.fail{background:var(--bad);}
@@ -269,13 +261,15 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
 .insp-name{font-size:12px;font-weight:600;margin-bottom:4px;}
 .insp-count{font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:500;}
 .stat-breakdown{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.cal-head span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:15px;letter-spacing:.01em;}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px;}
 .cal-head button{
   background:none;border:none;color:var(--text-dim);font-size:15px;padding:2px 8px;
-  border-radius:5px;line-height:1.4;
+  border-radius:5px;line-height:1.4;flex-shrink:0;
 }
 .cal-head button:hover{background:var(--surface-2);color:var(--text);}
+.cal-ym{display:flex;gap:4px;flex:1;justify-content:center;min-width:0;}
+.cal-ym select{width:auto;min-width:0;padding:3px 6px;font-size:12.5px;border-radius:5px;font-family:"Barlow Condensed",sans-serif;font-weight:700;}
+.cal-today-btn{font-size:11px !important;border:1px solid var(--border);border-radius:6px !important;padding:3px 9px !important;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;}
 .cal-dow{font-size:10.5px;color:var(--text-dim);text-align:center;padding-bottom:5px;min-width:0;}
 .cal-cell{
@@ -315,6 +309,38 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
 .modal-checklist label{display:flex;align-items:center;gap:9px;font-size:13.5px;cursor:pointer;}
 .modal-checklist input{width:15px;height:15px;accent-color:var(--brand);cursor:pointer;}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;}
+
+.info-icon{
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+  width:14px;height:14px;border-radius:50%;background:var(--surface-2);color:var(--text-dim);
+  font-size:10px;font-style:normal;margin-left:5px;cursor:help;position:relative;
+}
+.info-icon::after{
+  content:attr(data-tip);position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
+  width:250px;max-width:64vw;background:var(--surface);color:var(--text);border:1px solid var(--border);
+  border-radius:8px;padding:9px 11px;font-size:11.5px;line-height:1.55;box-shadow:var(--shadow);
+  white-space:normal;z-index:30;display:none;text-align:left;font-weight:400;
+}
+.info-icon:hover::after,.info-icon:focus::after{display:block;}
+
+.filter-block{margin-bottom:11px;}
+.filter-label{font-size:10.5px;color:var(--text-dim);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{padding:5px 12px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--text-dim);}
+.chip:hover{background:var(--surface-2);}
+.chip.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+.seg-group{display:inline-flex;border:1px solid var(--border);border-radius:99px;overflow:hidden;}
+.seg-btn{padding:6px 14px;font-size:12.5px;font-weight:600;border:none;border-right:1px solid var(--border);background:var(--surface);color:var(--text-dim);}
+.seg-btn:last-child{border-right:none;}
+.seg-btn.active{background:var(--brand);color:#fff;}
+.seg-btn.active[data-val="pass"]{background:var(--good);}
+.seg-btn.active[data-val="fail"]{background:var(--bad);}
+.filter-search{max-width:280px;}
+.filter-search input{padding:7px 10px;font-size:12.5px;}
+
+.pager{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px;font-size:12.5px;color:var(--text-dim);}
+.pager button{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 11px;color:var(--text);}
+.pager button:disabled{opacity:.4;cursor:not-allowed;}
 </style>
 
 <div class="wrap">
@@ -322,7 +348,7 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
     <div>
       <div class="eyebrow">Coating Test Evaluation</div>
       <h1>도료 시험 평가</h1>
-      <p class="sub">수성·유성 도료 샘플의 측정값을 규격과 비교해 합격/불합격을 판정하고 이력을 기록합니다.</p>
+      <p class="sub">수성·유성 도료 샘플의 측정값을 KS 시험 규격과 비교해 합격/불합격을 판정하고 이력을 기록합니다.</p>
     </div>
     <div class="right-col">
       <div class="mode-note" id="modeNote"><span class="mode-dot" id="modeDot"></span><span id="modeText">연결 확인 중…</span></div>
@@ -332,7 +358,7 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
   <section class="card" style="margin-bottom:22px;">
     <div class="card-head"><h2>개요</h2></div>
     <div class="card-body">
-      <p style="margin:0;color:var(--text-dim);line-height:1.7;">도료 판정소는 건축도료팀 연구원이 사용하는 화면이다. 지금은 일자별로 만드는 도료 샘플들을 실측 평가한 뒤, 그 측정값을 종이 검사일지에 적어 기준 규격값과 손으로 하나하나 대조해 합격·불합격을 판정하고 있다. 이 화면이 생기면 연구원은 측정값을 입력 폼에 입력하기만 하면 되고, 시스템이 기준 규격표(항목별 최소·최대값)와 자동으로 비교해 항목별 결과와 종합 합격·불합격을 즉시 보여주며, 오늘까지의 합격률 요약도 같은 화면에서 바로 확인할 수 있게 되어 수기 대조와 별도 집계에 들이던 시간과 실수 가능성이 줄어든다.</p>
+      <p style="margin:0;color:var(--text-dim);line-height:1.7;">도료 판정소는 건축도료팀 연구원이 사용하는 화면이다. 지금은 일자별로 만드는 도료 샘플들을 실측 평가한 뒤, 그 측정값을 종이 검사일지에 적어 기준 규격값과 손으로 하나하나 대조해 합격·불합격을 판정하고 있다. 이 화면이 생기면 연구원은 종류와 KS 세부 규격을 고르고 측정값을 입력 폼에 입력하기만 하면 되고, 시스템이 해당 규격의 기준(항목별 최소·최대값 또는 육안 판정 항목)과 자동으로 비교해 항목별 결과와 종합 합격·불합격을 즉시 보여주며, 오늘까지의 합격률 요약도 같은 화면에서 바로 확인할 수 있게 되어 수기 대조와 별도 집계에 들이던 시간과 실수 가능성이 줄어든다.</p>
     </div>
   </section>
 
@@ -352,8 +378,12 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
     <div class="cal-widget">
       <div class="cal-head">
         <button type="button" id="calPrev" aria-label="이전 달">‹</button>
-        <span id="calLabel"></span>
+        <div class="cal-ym">
+          <select id="calYearSel" aria-label="연도 선택"></select>
+          <select id="calMonthSel" aria-label="월 선택"></select>
+        </div>
         <button type="button" id="calNext" aria-label="다음 달">›</button>
+        <button type="button" class="btn ghost cal-today-btn" id="calTodayBtn">오늘</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
       <div class="cal-details" id="calDetails" hidden></div>
@@ -364,9 +394,7 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
     <div class="card" id="specCard">
       <div class="card-head">
         <h2>기준 규격</h2>
-        <div>
-          <button class="btn ghost" id="specEditBtn">기준값 수정</button>
-        </div>
+        <span class="spec-hint" id="specGradeLabel"></span>
       </div>
       <div class="card-body" id="specBody"></div>
     </div>
@@ -388,6 +416,12 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
             <datalist id="typeList"></datalist>
           </div>
         </div>
+        <div class="form-row single">
+          <div>
+            <label class="f">세부 규격 (KS 기준)</label>
+            <select id="gradeInput"><option value="">먼저 종류를 선택하세요</option></select>
+          </div>
+        </div>
         <div class="form-row">
           <div>
             <label class="f">검사자</label>
@@ -400,16 +434,19 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
             </div>
           </div>
           <div>
-            <label class="f">검사일</label>
-            <input type="date" id="dateInput">
+            <label class="f">제조일</label>
+            <input type="date" id="mfgDateInput">
           </div>
         </div>
         <div class="form-row">
           <div>
+            <label class="f">평가일 (평가 완료일)</label>
+            <input type="date" id="dateInput">
+          </div>
+          <div>
             <label class="f">샘플명 / 로트번호</label>
             <input type="text" id="nameInput" placeholder="자동 생성 (선택 입력)">
           </div>
-          <div></div>
         </div>
 
         <div class="measure-grid" id="measureGrid"></div>
@@ -424,30 +461,44 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
   <section class="card">
     <div class="card-head"><h2>검사 이력</h2></div>
     <div class="card-body">
-      <div class="filters">
-        <select id="fCat">
-          <option value="all">전체 종류</option>
-          <option value="수성">수성</option>
-          <option value="유성">유성</option>
-        </select>
-        <select id="fResult">
-          <option value="all">전체 판정</option>
-          <option value="pass">합격</option>
-          <option value="fail">불합격</option>
-        </select>
-        <input type="text" id="fSearch" placeholder="샘플명 · 타입 검색">
+      <div class="filter-block">
+        <div class="filter-label">연구자</div>
+        <div class="chip-row" id="fInspector"></div>
+      </div>
+      <div class="filter-block" style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end;">
+        <div>
+          <div class="filter-label">종류</div>
+          <div class="seg-group" id="fCat">
+            <button type="button" class="seg-btn active" data-val="all">전체</button>
+            <button type="button" class="seg-btn" data-val="수성">수성</button>
+            <button type="button" class="seg-btn" data-val="유성">유성</button>
+          </div>
+        </div>
+        <div>
+          <div class="filter-label">판정결과</div>
+          <div class="seg-group" id="fResult">
+            <button type="button" class="seg-btn active" data-val="all">전체</button>
+            <button type="button" class="seg-btn" data-val="pass">합격</button>
+            <button type="button" class="seg-btn" data-val="fail">불합격</button>
+          </div>
+        </div>
+        <div class="filter-search">
+          <div class="filter-label">검색</div>
+          <input type="text" id="fSearch" placeholder="샘플명 · 타입 검색">
+        </div>
       </div>
       <div class="hist-scroll">
         <table id="histTable">
           <thead>
             <tr>
-              <th>샘플명</th><th>종류</th><th>타입</th><th>검사자</th><th>검사일</th><th>항목결과</th><th>종합판정</th><th></th>
+              <th>샘플명</th><th>종류</th><th>세부규격</th><th>타입</th><th>검사자</th><th>제조일</th><th>평가일</th><th>항목결과</th><th>종합판정</th><th></th>
             </tr>
           </thead>
           <tbody id="histBody"></tbody>
         </table>
         <div class="empty" id="histEmpty" hidden>등록된 검사 이력이 없습니다. 위에서 첫 샘플을 판정해 보세요.</div>
       </div>
+      <div class="pager" id="histPager"></div>
     </div>
   </section>
 
@@ -466,52 +517,63 @@ select:focus{outline:2px solid var(--brand);outline-offset:1px;}
 </div>
 
 <script>
-const SPEC_DEFAULT = [
-  {key:'viscosity', label:'점도',        unit:'KU',  min:70,  max:90},
-  {key:'dryTime',   label:'건조시간',     unit:'분',  min:null,max:60},
-  {key:'adhesion',  label:'부착력',       unit:'등급',min:4,   max:5},
-  {key:'gloss',     label:'광택도',       unit:'GU',  min:60,  max:null},
-  {key:'hiding',    label:'은폐력',       unit:'%',   min:98,  max:null},
-  {key:'deltaE',    label:'색차(ΔE)',     unit:'ΔE',  min:null,max:1},
-  {key:'solids',    label:'고형분',       unit:'%',   min:45,  max:55},
-  {key:'gravity',   label:'비중',         unit:'',    min:1.2, max:1.5},
-  {key:'voc',       label:'VOC 함량',     unit:'g/L', min:null,max:100},
-];
+const KS_SPECS = {"수성":{"label":"KS M 6010:2014 (수성 도료)","grades":[{"id":"표1__1종__1급","표":"표1","종류":"1종","등급":"1급","label":"1종 1급 (외부용 1급)","items":[{"key":"g0_i0","label":"주도(K.U.)","note":"","desc":"크렙스-스토머 점도계(K.U.) 등 규정 방법으로 도료 주도 측정","std":"KS M 5000 시험방법 2122","clause":"4.1.2 b)","type":"numeric","min":80,"max":110},{"key":"g0_i1","label":"비휘발분(도료 중 %)","note":"","desc":"가열 후 잔류하는 비휘발분(고형분) 함량 측정","std":"KS M ISO 3251","clause":"4.1.2 c)","type":"numeric","min":56,"max":null},{"key":"g0_i2","label":"안료분(도료 중 %)","note":"","desc":"원심분리법으로 안료분 측정. 물로 10회 추출 후 아세톤으로 2회 추출","std":"KS M ISO 14680-1","clause":"4.1.2 d)","type":"numeric","min":null,"max":38},{"key":"g0_i3","label":"건조시간(고화, 분)","note":"","desc":"표준환경에서 지촉건조~고화건조까지 소요시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.1.2 e)","type":"numeric","min":null,"max":60},{"key":"g0_i4","label":"45°,0° 확산반사율(%)(흰색)","note":"","desc":"입사각45°,관찰각0° 조건의 확산반사율 측정(백색도 지표)","std":"KS M 5000 시험방법 3121","clause":"4.1.2 f)","type":"numeric","min":87,"max":null},{"key":"g0_i6","label":"은폐율(%)-흰색 및 기타색","note":"주a)투명 레이크 안료(특록색·특청색·빨간색·노란색 등) 사용 도료는 은폐율 미적용. 주b)기타색=흰색·담색 이외 색상","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":96,"max":null},{"key":"g0_i7","label":"은폐율(%)-담색","note":"주c)담색=KS A0062 기준 명도6이상, 채도6이하","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":98,"max":null},{"key":"g0_i8","label":"내세척성(회)","note":"","desc":"1종은 24시간 자연건조 후 실험, 도료는 희석하지 않고 그대로 사용하여 세척 횟수 평가","std":"KS M 5000 시험방법 3351","clause":"4.1.2 i)","type":"numeric","min":1000,"max":null},{"key":"g0_i9","label":"열안정성","note":"","desc":"마개있는 용기에 도료를 채워 테이프로 밀봉 → 규정온도 항온조에서 규정시간 유지 → 실온 냉각 후 저어서 완전히 혼합 → 조사","std":"표준 서술절차(개별 인용표준 없음)","clause":"4.1.2 j)","type":"qual","text":"60℃, 120시간 열안정성 시험에서 응고·변질되거나 주도가 8 K.U. 이상 변화되지 않아야 한다"},{"key":"g0_i10","label":"냉동안정성","note":"","desc":"약500mL 밀폐유리용기에 시료를 채우고 주도측정 후 밀봉, 규정온도 냉장고에서 16시간 냉동 후 (25±2)℃에서 8시간 방치하는 조작을 3회(1종은 4회) 연속 실시","std":"표준 서술절차","clause":"4.1.2 k)","type":"qual","text":"-10℃ 냉동시험에서 응고·변질되거나 주도가 8 K.U. 이상 증가하지 않아야 하며, 내세척성 시험에 합격하여야 한다"},{"key":"g0_i11","label":"적신 도막 은폐율(%)","note":"","desc":"건조도막 은폐력 측정 시험판에 유동파라핀을 젖은 도막두께 약37㎛로 도포, 수평 10분 방치 후 과량 제거하고 즉시 측정","std":"표준 서술절차(KS M 2160 유동파라핀 사용)","clause":"4.1.2 l)","type":"numeric","min":null,"max":2},{"key":"g0_i12","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 도료 상태를 육안 및 교반으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.1.2 m)","type":"qual","text":"균일한 상태로 쉽게 혼합할 수 있어야 하며 불순물, 굳은 덩어리가 없고 부패하지 않아야 한다"},{"key":"g0_i13","label":"내알칼리성","note":"","desc":"시험판(KS L5114 평형슬레이트 150x70x3mm)에 도장 후 수산화칼슘포화용액에 48시간(2종은 4시간) 침지, 흐르는물 세척 후 2시간 방치하여 도막 조사","std":"KS M ISO 2812-1","clause":"4.1.2 n)","type":"qual","text":"주름, 갈라짐, 부풂, 박리가 없어야 하며, 침지한 부분과 침지하지 않은 부분의 색과 광택의 차이가 크지 않아야 한다"},{"key":"g0_i14","label":"촉진내후성","note":"","desc":"시험판(KS L5114 150x70x6mm) 뒷면에 시료 5.5g을 24시간 간격으로 2회 도장, 72시간 건조 후 촉진내후성 시험","std":"KS M 5000 시험방법 3231(3.카본아크 또는 4.제논아크법), 색변화판정 3031, 황변도차 3211","clause":"4.1.2 o)","type":"qual","text":"300시간 촉진내후성시험에서 초킹이 생기지 않아야 하고, 흰색의 황변도 차는 0.1을 넘지 않아야 하며, 담색 및 기타색의 색변화(ΔL)는 4.0단위를 넘지 않아야 한다"}]},{"id":"표1__1종__2급","표":"표1","종류":"1종","등급":"2급","label":"1종 2급 (외부용 2급)","items":[{"key":"g1_i0","label":"주도(K.U.)","note":"","desc":"크렙스-스토머 점도계(K.U.) 등 규정 방법으로 도료 주도 측정","std":"KS M 5000 시험방법 2122","clause":"4.1.2 b)","type":"numeric","min":80,"max":110},{"key":"g1_i1","label":"비휘발분(도료 중 %)","note":"","desc":"가열 후 잔류하는 비휘발분(고형분) 함량 측정","std":"KS M ISO 3251","clause":"4.1.2 c)","type":"numeric","min":52,"max":null},{"key":"g1_i2","label":"안료분(도료 중 %)","note":"","desc":"원심분리법으로 안료분 측정. 물로 10회 추출 후 아세톤으로 2회 추출","std":"KS M ISO 14680-1","clause":"4.1.2 d)","type":"numeric","min":null,"max":42},{"key":"g1_i3","label":"건조시간(고화, 분)","note":"","desc":"표준환경에서 지촉건조~고화건조까지 소요시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.1.2 e)","type":"numeric","min":null,"max":60},{"key":"g1_i4","label":"45°,0° 확산반사율(%)(흰색)","note":"","desc":"입사각45°,관찰각0° 조건의 확산반사율 측정(백색도 지표)","std":"KS M 5000 시험방법 3121","clause":"4.1.2 f)","type":"numeric","min":80,"max":null},{"key":"g1_i6","label":"은폐율(%)-흰색 및 기타색","note":"주a),주b) 동일","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":94,"max":null},{"key":"g1_i7","label":"은폐율(%)-담색","note":"주c) 동일","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":96,"max":null},{"key":"g1_i8","label":"내세척성(회)","note":"","desc":"1종은 24시간 자연건조 후 실험, 도료는 희석하지 않고 그대로 사용하여 세척 횟수 평가","std":"KS M 5000 시험방법 3351","clause":"4.1.2 i)","type":"numeric","min":1000,"max":null},{"key":"g1_i10","label":"냉동안정성","note":"","desc":"약500mL 밀폐유리용기에 시료를 채우고 주도측정 후 밀봉, 규정온도 냉장고에서 16시간 냉동 후 (25±2)℃에서 8시간 방치하는 조작을 3회 연속 실시","std":"표준 서술절차","clause":"4.1.2 k)","type":"qual","text":"-5℃ 냉동시험에서 응고·변질되지 않아야 한다"},{"key":"g1_i11","label":"적신 도막 은폐율(%)","note":"","desc":"건조도막 은폐력 측정 시험판에 유동파라핀을 젖은 도막두께 약37㎛로 도포, 수평 10분 방치 후 과량 제거하고 즉시 측정","std":"표준 서술절차(KS M 2160 유동파라핀 사용)","clause":"4.1.2 l)","type":"numeric","min":null,"max":2},{"key":"g1_i12","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 도료 상태를 육안 및 교반으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.1.2 m)","type":"qual","text":"균일한 상태로 쉽게 혼합할 수 있어야 하며 불순물, 굳은 덩어리가 없고 부패하지 않아야 한다"},{"key":"g1_i13","label":"내알칼리성","note":"","desc":"시험판(KS L5114 평형슬레이트 150x70x3mm)에 도장 후 수산화칼슘포화용액에 48시간(2종은 4시간) 침지, 흐르는물 세척 후 2시간 방치하여 도막 조사","std":"KS M ISO 2812-1","clause":"4.1.2 n)","type":"qual","text":"주름, 갈라짐, 부풂, 박리가 없어야 하며, 침지한 부분과 침지하지 않은 부분의 색과 광택의 차이가 크지 않아야 한다"},{"key":"g1_i14","label":"촉진내후성","note":"","desc":"시험판(KS L5114 150x70x6mm) 뒷면에 시료 5.5g을 24시간 간격으로 2회 도장, 72시간 건조 후 촉진내후성 시험","std":"KS M 5000 시험방법 3231(3.카본아크 또는 4.제논아크법), 색변화판정 3031, 황변도차 3211","clause":"4.1.2 o)","type":"qual","text":"200시간 촉진내후성시험에서 초킹이 생기지 않아야 하고, 흰색의 황변도 차는 0.12를 넘지 않아야 하며, 담색 및 기타색의 색변화(ΔL)는 4.0단위를 넘지 않아야 한다"}]},{"id":"표1__2종__1급","표":"표1","종류":"2종","등급":"1급","label":"2종 1급 (내부용 1급)","items":[{"key":"g2_i0","label":"주도(K.U.)","note":"","desc":"크렙스-스토머 점도계(K.U.) 등 규정 방법으로 도료 주도 측정","std":"KS M 5000 시험방법 2122","clause":"4.1.2 b)","type":"numeric","min":80,"max":110},{"key":"g2_i1","label":"비휘발분(도료 중 %)","note":"","desc":"가열 후 잔류하는 비휘발분(고형분) 함량 측정","std":"KS M ISO 3251","clause":"4.1.2 c)","type":"numeric","min":50,"max":null},{"key":"g2_i3","label":"건조시간(고화, 분)","note":"","desc":"표준환경에서 지촉건조~고화건조까지 소요시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.1.2 e)","type":"numeric","min":null,"max":60},{"key":"g2_i4","label":"45°,0° 확산반사율(%)(흰색)","note":"","desc":"입사각45°,관찰각0° 조건의 확산반사율 측정(백색도 지표)","std":"KS M 5000 시험방법 3121","clause":"4.1.2 f)","type":"numeric","min":82,"max":null},{"key":"g2_i5","label":"광택(85°)","note":"","desc":"85° 경면광택도 측정","std":"KS M ISO 2813","clause":"4.1.2 g)","type":"numeric","min":null,"max":10},{"key":"g2_i6","label":"은폐율(%)-흰색 및 기타색","note":"주a),주b) 동일","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":92,"max":null},{"key":"g2_i7","label":"은폐율(%)-담색","note":"주c) 동일","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":92,"max":null},{"key":"g2_i8","label":"내세척성(회)","note":"","desc":"도료는 희석하지 않고 그대로 사용하여 세척 횟수 평가","std":"KS M 5000 시험방법 3351","clause":"4.1.2 i)","type":"numeric","min":500,"max":null},{"key":"g2_i10","label":"냉동안정성","note":"","desc":"약500mL 밀폐유리용기에 시료를 채우고 주도측정 후 밀봉, 규정온도 냉장고에서 16시간 냉동 후 (25±2)℃에서 8시간 방치하는 조작을 3회 연속 실시","std":"표준 서술절차","clause":"4.1.2 k)","type":"qual","text":"-10℃ 냉동시험에서 응고·변질되거나 주도가 8 K.U. 이상 증가하지 않아야 하며, 도장했을 때 균일하게 건조되어야 한다"},{"key":"g2_i12","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 도료 상태를 육안 및 교반으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.1.2 m)","type":"qual","text":"균일한 상태로 쉽게 혼합할 수 있어야 하며 불순물, 굳은 덩어리가 없고 부패하지 않아야 한다"},{"key":"g2_i15","label":"저장안정성(용기에 차지 않았을 때)","note":"2종1급에만 적용(2종2급은 규정 없음)","desc":"약1L 용기에 3/4정도 채워 밀폐 후 22~27℃ 어두운 곳에서 48시간 저장하여 피막 조사, 재밀폐 후 49℃에서 14일간 저장 후 개봉하여 조사","std":"KS M 5000 시험방법 2021 및 2031","clause":"4.1.2 p)","type":"qual","text":"도료를 4.1.2 p)에 따라 시험할 때 피막이 없어야 하고, 4.1.2 k)에 규정된 조건으로 저장 후 도료는 리버팅, 응결, 딱딱한 케이킹, 고무상 침전물 등이 없어야 하며, 저으면 쉽게 균일한 상태로 되어야 한다"},{"key":"g2_i16","label":"냄새","note":"원본 표에서 2종 1급·2급에 병합 표기됨(등급별 구분 없이 공통 적용으로 판단)","desc":"도장 중/후 및 24시간 건조 후 냄새 관능평가","std":"KS M 5000 시험방법 2041","clause":"4.1.2 q)","type":"qual","text":"도장 중이나 후에 자극성 냄새가 심하지 않아야 하며, 24시간 건조 후에는 악취가 없어야 한다"},{"key":"g2_i17","label":"내곰팡이성","note":"원본 표에서 2종 1급·2급에 병합 표기됨(등급별 구분 없이 공통 적용으로 판단)","desc":"도막에 곰팡이 접종 후 표면 손상도 등급 평가","std":"KS M 5000 시험방법 3431","clause":"4.1.2 r)","type":"numeric","min":6,"max":null}]},{"id":"표1__2종__2급","표":"표1","종류":"2종","등급":"2급","label":"2종 2급 (내부용 2급)","items":[{"key":"g3_i0","label":"주도(K.U.)","note":"","desc":"크렙스-스토머 점도계(K.U.) 등 규정 방법으로 도료 주도 측정","std":"KS M 5000 시험방법 2122","clause":"4.1.2 b)","type":"numeric","min":80,"max":110},{"key":"g3_i1","label":"비휘발분(도료 중 %)","note":"","desc":"가열 후 잔류하는 비휘발분(고형분) 함량 측정","std":"KS M ISO 3251","clause":"4.1.2 c)","type":"numeric","min":50,"max":null},{"key":"g3_i3","label":"건조시간(고화, 분)","note":"","desc":"표준환경에서 지촉건조~고화건조까지 소요시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.1.2 e)","type":"numeric","min":null,"max":60},{"key":"g3_i4","label":"45°,0° 확산반사율(%)(흰색)","note":"","desc":"입사각45°,관찰각0° 조건의 확산반사율 측정(백색도 지표)","std":"KS M 5000 시험방법 3121","clause":"4.1.2 f)","type":"numeric","min":80,"max":null},{"key":"g3_i6","label":"은폐율(%)-흰색 및 기타색","note":"주a),주b) 동일","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":92,"max":null},{"key":"g3_i7","label":"은폐율(%)-담색","note":"주c) 동일","desc":"동형동색 도료의 은폐율 비교. 젖은 도막두께 1종 약130㎛, 2종 약65㎛","std":"KS M ISO 2814","clause":"4.1.2 h)","type":"numeric","min":92,"max":null},{"key":"g3_i8","label":"내세척성(회)","note":"","desc":"도료는 희석하지 않고 그대로 사용하여 세척 횟수 평가","std":"KS M 5000 시험방법 3351","clause":"4.1.2 i)","type":"numeric","min":300,"max":null},{"key":"g3_i10","label":"냉동안정성","note":"","desc":"약500mL 밀폐유리용기에 시료를 채우고 주도측정 후 밀봉, 규정온도 냉장고에서 16시간 냉동 후 (25±2)℃에서 8시간 방치하는 조작을 3회 연속 실시","std":"표준 서술절차","clause":"4.1.2 k)","type":"qual","text":"-5℃ 냉동시험에서 응고·변질되지 않아야 한다"},{"key":"g3_i12","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 도료 상태를 육안 및 교반으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.1.2 m)","type":"qual","text":"균일한 상태로 쉽게 혼합할 수 있어야 하며 불순물, 굳은 덩어리가 없고 부패하지 않아야 한다"},{"key":"g3_i16","label":"냄새","note":"원본 표에서 2종 1급·2급에 병합 표기됨(등급별 구분 없이 공통 적용으로 판단)","desc":"도장 중/후 및 24시간 건조 후 냄새 관능평가","std":"KS M 5000 시험방법 2041","clause":"4.1.2 q)","type":"qual","text":"도장 중이나 후에 자극성 냄새가 심하지 않아야 하며, 24시간 건조 후에는 악취가 없어야 한다"},{"key":"g3_i17","label":"내곰팡이성","note":"원본 표에서 2종 1급·2급에 병합 표기됨(등급별 구분 없이 공통 적용으로 판단)","desc":"도막에 곰팡이 접종 후 표면 손상도 등급 평가","std":"KS M 5000 시험방법 3431","clause":"4.1.2 r)","type":"numeric","min":6,"max":null}]},{"id":"표2__3종__내수형","표":"표2","종류":"3종","등급":"내수형","label":"3종 내수형 (내수형 퍼티)","items":[{"key":"g4_i0","label":"비휘발분(도료 중 %)","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정. 단, KS L1561 규정 밑 평평 자기증발접시(지름 60mm) 사용","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":60,"max":null},{"key":"g4_i1","label":"건조시간","note":"","desc":"플렉시블판(약500x200x6mm)에 얇게(약0.5mm)/두껍게(약1.5mm) 두께로 강재주걱(너비 약120mm) 도장 후 고화건조 시간 측정","std":"KS M 5000 시험방법 2511의 4.4(고화건조)","clause":"4.2.2 c)","type":"qual","text":"얇게 칠하는 것: 5시간 이내 / 두껍게 칠하는 것: 24시간 이내"},{"key":"g4_i2","label":"저온안정성","note":"","desc":"지름 약90mm, 부피 약500mL 용기에 시료 약0.5kg을 넣고 (-5±1)℃ 저온항온조에 4시간 → (20±1)℃에서 2시간 방치 후 작업성 측정","std":"표준 서술절차","clause":"4.2.2 d)","type":"qual","text":"온도 (-5±1)℃로 4시간 냉각시켜도 변질되지 않을 것"},{"key":"g4_i3","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 퍼티 상태를 육안으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.2.2 e)","type":"qual","text":"덩어리가 없고 균일할 것"},{"key":"g4_i4","label":"연마용이성","note":"주a) 견본품은 인수·인도 당사자 간 협의에 따르되, 연마용이성 시험에만 사용","desc":"얇게 칠하는 것은 240번, 두껍게 칠하는 것은 180번 연마지로 공연마하여 연마 상태 조사","std":"표준 서술절차(KS L6003 연마지)","clause":"4.2.2 f)","type":"qual","text":"공연마할 때 견본품(주a)에 비하여 연마가 쉬울 것"},{"key":"g4_i5","label":"내수성","note":"","desc":"시험편 3매를 (20±5)℃ 물에 24시간 침지. 3매 중 2매 이상이 손끝 점착 없음+부풂/갈라짐/벗겨짐 없어야 합격","std":"KS M ISO 2812-1, KS M ISO 2812-2","clause":"4.2.2 g)","type":"numeric","min":24,"max":null},{"key":"g4_i6","label":"내알칼리성","note":"","desc":"시험편 3매를 (20±5)℃ 수산화칼슘포화용액에 24시간 침지. 3매 중 2매 이상 이상없어야 합격","std":"KS M ISO 2812-1, KS M ISO 2812-2","clause":"4.2.2 h)","type":"numeric","min":24,"max":null},{"key":"g4_i7","label":"상도 적합성","note":"","desc":"붓칠 1회, 도포량 15~20mL로 상도. 사이징·구멍·부풂·점착이 없어야 합격","std":"표준 서술절차","clause":"4.2.2 i)","type":"qual","text":"상도 도장 시 지장이 없을 것"},{"key":"g4_i8","label":"부착강도(N/cm2)","note":"","desc":"F=P/16(F:부착강도N/cm2, P:최대하중N). 하중속도 1.471~1.961 kN/min으로 인장시험, 6회 시험 평균값으로 판정","std":"표준 서술절차(인장시험기+강재어태치먼트)","clause":"4.2.2 j)","type":"qual","text":"이 표준에 규정한 1종 1급으로 상도한 후 49.0 N/cm2{5.0 kgf/cm2} 이상일 것"}]},{"id":"표2__3종__일반형","표":"표2","종류":"3종","등급":"일반형","label":"3종 일반형 (일반형 퍼티)","items":[{"key":"g5_i0","label":"비휘발분(도료 중 %)","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정. 단, KS L1561 규정 밑 평평 자기증발접시(지름 60mm) 사용","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":60,"max":null},{"key":"g5_i1","label":"건조시간","note":"","desc":"플렉시블판(약500x200x6mm)에 얇게(약0.5mm)/두껍게(약1.5mm) 두께로 강재주걱(너비 약120mm) 도장 후 고화건조 시간 측정","std":"KS M 5000 시험방법 2511의 4.4(고화건조)","clause":"4.2.2 c)","type":"qual","text":"얇게 칠하는 것: 5시간 이내 / 두껍게 칠하는 것: 24시간 이내"},{"key":"g5_i2","label":"저온안정성","note":"","desc":"지름 약90mm, 부피 약500mL 용기에 시료 약0.5kg을 넣고 (-5±1)℃ 저온항온조에 4시간 → (20±1)℃에서 2시간 방치 후 작업성 측정","std":"표준 서술절차","clause":"4.2.2 d)","type":"qual","text":"온도 (-5±1)℃로 4시간 냉각시켜도 변질되지 않을 것"},{"key":"g5_i3","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 퍼티 상태를 육안으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.2.2 e)","type":"qual","text":"덩어리가 없고 균일할 것"},{"key":"g5_i4","label":"연마용이성","note":"주a) 동일","desc":"얇게 칠하는 것은 240번, 두껍게 칠하는 것은 180번 연마지로 공연마하여 연마 상태 조사","std":"표준 서술절차(KS L6003 연마지)","clause":"4.2.2 f)","type":"qual","text":"공연마할 때 견본품(주a)에 비하여 연마가 쉬울 것"},{"key":"g5_i7","label":"상도 적합성","note":"","desc":"붓칠 1회, 도포량 15~20mL로 상도. 사이징·구멍·부풂·점착이 없어야 합격","std":"표준 서술절차","clause":"4.2.2 i)","type":"qual","text":"상도 도장 시 지장이 없을 것"},{"key":"g5_i8","label":"부착강도(N/cm2)","note":"","desc":"F=P/16(F:부착강도N/cm2, P:최대하중N). 하중속도 1.471~1.961 kN/min으로 인장시험, 6회 시험 평균값으로 판정","std":"표준 서술절차(인장시험기+강재어태치먼트)","clause":"4.2.2 j)","type":"qual","text":"이 표준에 규정한 2종 1급으로 상도한 후 24.5 N/cm2{2.5 kgf/cm2} 이상일 것"}]}]},"유성":{"label":"KS M 6020:2014 (유성 도료)","grades":[{"id":"표1__1종__1급","표":"표1","종류":"1종","등급":"1급","label":"1종 1급 (조합 도료 1급)","items":[{"key":"g0_i0","label":"안료분(도료에 대한 %)-흰색 및 담색","note":"담색은 KS A 0062에 따라 명도 6 이상, 채도 6 이하인 것","desc":"원심분리법으로 안료분 측정","std":"KS M ISO 14680-1","clause":"4.1.2 c)","type":"numeric","min":null,"max":53},{"key":"g0_i1","label":"안료분(도료에 대한 %)-기타 색","note":"기타 색은 흰색, 담색을 제외한 나머지 색상","desc":"원심분리법으로 안료분 측정","std":"KS M ISO 14680-1","clause":"4.1.2 c)","type":"numeric","min":17,"max":null},{"key":"g0_i2","label":"비휘발 전색제분(전색제에 대한 %)-흰색 및 담색","note":"","desc":"비휘발 전색제분 측정","std":"KS M 5000 시험방법 2112","clause":"4.1.2 d)","type":"numeric","min":58,"max":null},{"key":"g0_i3","label":"비휘발 전색제분(전색제에 대한 %)-기타 색","note":"","desc":"비휘발 전색제분 측정","std":"KS M 5000 시험방법 2112","clause":"4.1.2 d)","type":"numeric","min":50,"max":null},{"key":"g0_i4","label":"색상","note":"표 1에는 별도 수치 규정이 없으며 시험용 표준판과 육안으로 비교하여 판정함","desc":"깨끗하고 평활한 유리판에 젖은 도막 두께 0.076mm로 칠하고 24시간 건조 후 표준판과 시각적으로 비교","std":"KS M ISO 3668","clause":"4.1.2 b)","type":"qual","text":"정성적 판정(수치 기준 없음)"},{"key":"g0_i5","label":"광택 60°","note":"","desc":"비금속성 도료 도막의 60° 경면광택도 측정","std":"KS M ISO 2813","clause":"4.1.2 e)","type":"numeric","min":60,"max":null},{"key":"g0_i6","label":"은폐율(%)","note":"특록색, 특청색, 빨간색 및 노란색 등 투명성 레이크 안료를 사용한 도료는 은폐율을 적용하지 않음","desc":"젖은 도막이 0.076mm가 되도록 칠하여 48시간 건조 후 측정","std":"KS M ISO 2814","clause":"4.1.2 f)","type":"numeric","min":95,"max":null},{"key":"g0_i7","label":"45°,0° 확산 반사율(백색에 한한다)","note":"","desc":"48시간 건조 후 측정","std":"KS M 5000 시험방법 3121","clause":"4.1.2 g)","type":"numeric","min":86,"max":null},{"key":"g0_i8","label":"고화 건조(시간)","note":"","desc":"지촉건조~고화건조까지 시간 측정","std":"KS M 5000 시험방법 2511 및 2512","clause":"4.1.2 h)","type":"numeric","min":null,"max":48},{"key":"g0_i9","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 도료 상태를 육안 및 교반으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.1.2 i)","type":"qual","text":"저었을 때 침전물, 덩어리, 응결, 피막 등이 없어야 하며 퍼짐성이 좋아야 한다"},{"key":"g0_i10","label":"내굴곡성","note":"","desc":"석유 나프타와 에틸렌 글라이콜 모노에틸 에터 혼합액으로 처리된 주석판(KS M ISO 1514)에 건조 도막 두께 약 0.026mm, 너비 약 5cm로 도포, 48시간 자연 건조 후 (105±5)℃ 2시간 유지, 실온 30분 냉각 후 지름 0.635cm 맨드릴 봉에 굽혀 7배 확대경으로 균열 조사","std":"KS M ISO 1519","clause":"4.1.2 j)","type":"qual","text":"도막을 시험하였을 때 균열, 떨어짐이 생기지 않아야 한다"},{"key":"g0_i11","label":"촉진 내후성","note":"","desc":"건조 도막 두께 0.037mm로 칠하여 상온 7일 건조 후 촉진 내후성 시험. 물로 세척 후 2시간 건조하여 검사, 황변도는 시험방법 3211에 따라 측정","std":"KS M ISO 1514에 규정된 철판; KS M 5000 시험방법 3231의 3.(카본-아크) 또는 4.(제논-아크)","clause":"4.1.2 k)","type":"qual","text":"100시간의 촉진 내후성 시험에서 부풂, 갈라짐, 벗겨짐이 없어야 하며, 초기 광택의 60% 이상 감소하지 않아야 하고, 흰색 및 담색은 초킹 현상이 없어야 하며, 황변도 차는 0.15를 넘지 않아야 한다"}]},{"id":"표1__1종__2급","표":"표1","종류":"1종","등급":"2급","label":"1종 2급 (조합 도료 2급)","items":[{"key":"g1_i0","label":"안료분(도료에 대한 %)-흰색 및 담색","note":"담색은 KS A 0062에 따라 명도 6 이상, 채도 6 이하인 것","desc":"원심분리법으로 안료분 측정","std":"KS M ISO 14680-1","clause":"4.1.2 c)","type":"numeric","min":null,"max":40},{"key":"g1_i1","label":"안료분(도료에 대한 %)-기타 색","note":"기타 색은 흰색, 담색을 제외한 나머지 색상","desc":"원심분리법으로 안료분 측정","std":"KS M ISO 14680-1","clause":"4.1.2 c)","type":"numeric","min":17,"max":null},{"key":"g1_i2","label":"비휘발 전색제분(전색제에 대한 %)-흰색 및 담색","note":"","desc":"비휘발 전색제분 측정","std":"KS M 5000 시험방법 2112","clause":"4.1.2 d)","type":"numeric","min":50,"max":null},{"key":"g1_i3","label":"비휘발 전색제분(전색제에 대한 %)-기타 색","note":"","desc":"비휘발 전색제분 측정","std":"KS M 5000 시험방법 2112","clause":"4.1.2 d)","type":"numeric","min":50,"max":null},{"key":"g1_i4","label":"색상","note":"표 1에는 별도 수치 규정이 없으며 시험용 표준판과 육안으로 비교하여 판정함","desc":"깨끗하고 평활한 유리판에 젖은 도막 두께 0.076mm로 칠하고 24시간 건조 후 표준판과 시각적으로 비교","std":"KS M ISO 3668","clause":"4.1.2 b)","type":"qual","text":"정성적 판정(수치 기준 없음)"},{"key":"g1_i5","label":"광택 60°","note":"","desc":"비금속성 도료 도막의 60° 경면광택도 측정","std":"KS M ISO 2813","clause":"4.1.2 e)","type":"numeric","min":60,"max":null},{"key":"g1_i6","label":"은폐율(%)","note":"특록색, 특청색, 빨간색 및 노란색 등 투명성 레이크 안료를 사용한 도료는 은폐율을 적용하지 않음","desc":"젖은 도막이 0.076mm가 되도록 칠하여 48시간 건조 후 측정","std":"KS M ISO 2814","clause":"4.1.2 f)","type":"numeric","min":85,"max":null},{"key":"g1_i7","label":"45°,0° 확산 반사율(백색에 한한다)","note":"","desc":"48시간 건조 후 측정","std":"KS M 5000 시험방법 3121","clause":"4.1.2 g)","type":"numeric","min":70,"max":null},{"key":"g1_i8","label":"고화 건조(시간)","note":"","desc":"지촉건조~고화건조까지 시간 측정","std":"KS M 5000 시험방법 2511 및 2512","clause":"4.1.2 h)","type":"numeric","min":null,"max":48},{"key":"g1_i9","label":"용기 내에서의 상태","note":"","desc":"용기를 열어 도료 상태를 육안 및 교반으로 확인","std":"KS M 5000 시험방법 2011","clause":"4.1.2 i)","type":"qual","text":"저었을 때 침전물, 덩어리, 응결, 피막 등이 없어야 하며 퍼짐성이 좋아야 한다"},{"key":"g1_i10","label":"내굴곡성","note":"","desc":"석유 나프타와 에틸렌 글라이콜 모노에틸 에터 혼합액으로 처리된 주석판(KS M ISO 1514)에 건조 도막 두께 약 0.026mm, 너비 약 5cm로 도포, 48시간 자연 건조 후 (105±5)℃ 2시간 유지, 실온 30분 냉각 후 지름 0.635cm 맨드릴 봉에 굽혀 7배 확대경으로 균열 조사","std":"KS M ISO 1519","clause":"4.1.2 j)","type":"qual","text":"도막을 시험하였을 때 균열, 떨어짐이 생기지 않아야 한다"},{"key":"g1_i11","label":"촉진 내후성","note":"","desc":"건조 도막 두께 0.037mm로 칠하여 상온 7일 건조 후 촉진 내후성 시험. 물로 세척 후 2시간 건조하여 검사, 황변도는 시험방법 3211에 따라 측정","std":"KS M ISO 1514에 규정된 철판; KS M 5000 시험방법 3231의 3.(카본-아크) 또는 4.(제논-아크)","clause":"4.1.2 k)","type":"qual","text":"100시간의 촉진 내후성 시험에서 부풂, 갈라짐, 벗겨짐이 없어야 하며, 초기 광택의 60% 이상 감소하지 않아야 하고, 흰색 및 담색은 초킹 현상이 없어야 하며, 황변도 차는 0.15를 넘지 않아야 한다"}]},{"id":"표2__2종__유광 1급","표":"표2","종류":"2종","등급":"유광 1급","label":"2종 유광 1급 (자연 건조형 에나멜 유광 1급)","items":[{"key":"g2_i0","label":"비휘발분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":58,"max":null},{"key":"g2_i1","label":"비휘발분(에나멜에 대한 %)-기타 색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":44,"max":null},{"key":"g2_i2","label":"비휘발 전색제분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":32,"max":null},{"key":"g2_i3","label":"비휘발 전색제분(에나멜에 대한 %)-기타 색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":32,"max":null},{"key":"g2_i4","label":"은폐율(%)-흰색","note":"","desc":"필름 애플리케이터 두께 유광 약 0.0025cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":90,"max":null},{"key":"g2_i5","label":"은폐율(%)-담색, 기타 색","note":"","desc":"필름 애플리케이터 두께 유광 약 0.0025cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":88,"max":null},{"key":"g2_i6","label":"광택 60°(초기)","note":"","desc":"유리판에 젖은 도막 두께 유광 약 0.0076cm로 필름 애플리케이터로 도막을 만들고 48시간 건조 후 측정","std":"KS M ISO 2813","clause":"4.2.2 e)","type":"numeric","min":85,"max":null},{"key":"g2_i7","label":"45°,0° 확산 반사율(흰색 에나멜에 한한다)","note":"","desc":"48시간 건조시킨 후 측정","std":"KS M 5000 시험방법 3121","clause":"4.2.2 f)","type":"numeric","min":84,"max":null},{"key":"g2_i8","label":"건조 시간(시간)-지촉 건조","note":"","desc":"지촉건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":2},{"key":"g2_i9","label":"건조 시간(시간)-고화 건조","note":"","desc":"고화건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":8},{"key":"g2_i10","label":"내굴곡성","note":"","desc":"주석판(KS M ISO 1514) 건조 도막 0.026mm, 18시간 자연 건조 후 (105±5)℃ 96시간 유지, 실온 30분 냉각 후 유광은 지름 0.318cm, 반광·무광은 지름 0.635cm 맨드릴 봉에 굽혀 7배 확대경으로 조사","std":"KS M ISO 1519","clause":"4.2.2 h)","type":"qual","text":"도막을 시험하였을 때 균열, 떨어짐이 생기지 않아야 한다"},{"key":"g2_i11","label":"나이프 시험","note":"","desc":"30° 각도로 칼날을 대어 도막을 좁은 리본 모양으로 잘라 유연성·부스러짐·강인성 시험. 유광은 내굴곡성 시험편, 반광·무광은 KS M ISO 1514의 3.(강판)에 0.003cm 두께로 칠해 72시간 자연 건조 후 시험","std":"표준 서술절차","clause":"4.2.2 i)","type":"qual","text":"도막을 시험할 때 시험판에 굳게 부착되어 있어야 하며, 균열이 생기거나 떨어지지 않아야 한다. 도막을 자를 때 도막이 부스러지지 않고, 시험판에서 리본 또는 컬(curl) 상태로 잘라야 하며, 단면은 사면(斜面)이어야 한다"},{"key":"g2_i12","label":"용기 내에서의 상태","note":"","desc":"젖지 않고 안료의 침전, 케이킹이 있는지 조사. 용기를 봉하여 흔들어 혼합한 후 다시 열어 겔상 물질 또는 침전 유무를 조사","std":"표준 서술절차","clause":"4.2.2 j)","type":"qual","text":"에나멜이 충만된 용기를 열어볼 때 내용물에 피막, 굳은 덩어리, 이물 등이 없어야 하며, 안료의 침전이나 케이킹(caking), 리버링(livering) 현상이 심해서도 안 되며, 저으면 쉽게 균일한 상태가 되어야 한다"},{"key":"g2_i13","label":"저장성(용기에 차지 않았을 때)","note":"","desc":"21℃~32℃에서 48시간 및 60℃에서 7일간 저장한 후 조사","std":"KS M 5000 시험방법 2021","clause":"4.2.2 k)","type":"qual","text":"부피는 약 1L의 용기에 3/4 정도 에나멜을 채워 밀폐한 후, 온도가 21℃~32℃로 유지되는 어두운 곳에 48시간 저장하였을 때 피막이 생성되지 않아야 한다. 이 시료를 다시 60℃에서 7일 동안 저장한 후 뚜껑을 열어 보았을 때, 생성된 피막은 균일하여야 하며 쉽게 제거되어야 하고, 에나멜에 리버링, 응결, 고무상 침전물, 굳은 덩어리 등이 생기지 않아야 하며, 저으면 쉽게 균일한 상태로 되어야 한다"},{"key":"g2_i14","label":"재도장 시험","note":"","desc":"시험편을 만들어 24시간 자연 건조 후 재도장하여 검사","std":"KS M 5000 시험방법 2511","clause":"4.2.2 l)","type":"qual","text":"건조 도막에 재도장할 때 도막에 이상이 없어야 한다"},{"key":"g2_i15","label":"희석 안정성","note":"","desc":"부피비로 에나멜과 KS M 6060의 1종을 1:1로 희석하여 시험","std":"표준 서술절차","clause":"4.2.2 m)","type":"qual","text":"에나멜은 희석하였을 때 침전, 응결, 분리 현상이 없어야 하며, 안료의 약간 침전은 허용한다"},{"key":"g2_i16","label":"내수성","note":"","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm, 168시간 건조 후 18시간 (23±1)℃ 물에 침지 후 검사","std":"표준 서술절차","clause":"4.2.2 n)","type":"qual","text":"시험편을 물에서 규정된 조건으로 18시간 침지한 후 즉시 꺼내 도막을 조사할 때, 도막에 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 부착성, 색상, 광택에 별 차이가 없어야 하며, 광택은 유광 90% 이상, 반광·무광은 10% 이상 보유하고 있어야 한다"},{"key":"g2_i17","label":"내휘발유성","note":"","desc":"내수성 시험편과 같이 만들어 KS M 2611의 2호 속에 4시간 담근 후 검사","std":"표준 서술절차","clause":"4.2.2 o)","type":"qual","text":"시험편을 휘발유에서 규정된 조건으로 침지한 후 즉시 꺼내 도막을 조사할 때 도막 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 색상 및 광택이 별 차이가 없어야 한다. 다만, 적색 계통은 뽀얗게(milky) 되는 경향은 무시하나, 광택은 유광 90%, 반광, 무광은 10% 이상 보유하고 있어야 한다"},{"key":"g2_i18","label":"촉진 내후성","note":"","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm 형성, 96시간 실온 건조 후 광택·확산반사율 측정, 168시간 촉진 내후성 시험 후 재측정하여 감소율 계산, 명도지수차(ΔL)로 색 변화 결정","std":"KS M 5000 시험방법 3231","clause":"4.2.2 p)","type":"qual","text":"시험을 한 도막에 초킹이 없어야 하며, 유광은 시험 전 광택이 30% 이상, 반광은 50% 이상 감소되지 않아야 하고, 색 변화는 명도차 4단위를 넘으면 안 된다. 다만, 황색 계통은 6단위를 넘으면 안 된다"},{"key":"g2_i19","label":"유해 물질 사용 금지","note":"표 2 비고 사항(등급별 구분 없이 공통 적용)","desc":"-","std":"해당 없음","clause":"표2 비고","type":"qual","text":"제조자는 도료에 벤젠, 염소화 탄화수소 및 기타 독성 물질 같은 해로운 것을 넣어서는 안 된다"}]},{"id":"표2__2종__유광 2급","표":"표2","종류":"2종","등급":"유광 2급","label":"2종 유광 2급 (자연 건조형 에나멜 유광 2급)","items":[{"key":"g3_i0","label":"비휘발분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":45,"max":null},{"key":"g3_i1","label":"비휘발분(에나멜에 대한 %)-기타 색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":40,"max":null},{"key":"g3_i2","label":"비휘발 전색제분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":30,"max":null},{"key":"g3_i3","label":"비휘발 전색제분(에나멜에 대한 %)-기타 색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":30,"max":null},{"key":"g3_i4","label":"은폐율(%)-흰색","note":"","desc":"필름 애플리케이터 두께 유광 약 0.0025cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":88,"max":null},{"key":"g3_i5","label":"은폐율(%)-담색, 기타 색","note":"","desc":"필름 애플리케이터 두께 유광 약 0.0025cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":80,"max":null},{"key":"g3_i6","label":"광택 60°(초기)","note":"","desc":"유리판에 젖은 도막 두께 유광 약 0.0076cm로 필름 애플리케이터로 도막을 만들고 48시간 건조 후 측정","std":"KS M ISO 2813","clause":"4.2.2 e)","type":"numeric","min":85,"max":null},{"key":"g3_i7","label":"45°,0° 확산 반사율(흰색 에나멜에 한한다)","note":"","desc":"48시간 건조시킨 후 측정","std":"KS M 5000 시험방법 3121","clause":"4.2.2 f)","type":"numeric","min":80,"max":null},{"key":"g3_i8","label":"건조 시간(시간)-지촉 건조","note":"","desc":"지촉건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":2},{"key":"g3_i9","label":"건조 시간(시간)-고화 건조","note":"","desc":"고화건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":8},{"key":"g3_i10","label":"내굴곡성","note":"","desc":"주석판(KS M ISO 1514) 건조 도막 0.026mm, 18시간 자연 건조 후 (105±5)℃ 96시간 유지, 실온 30분 냉각 후 유광은 지름 0.318cm, 반광·무광은 지름 0.635cm 맨드릴 봉에 굽혀 7배 확대경으로 조사","std":"KS M ISO 1519","clause":"4.2.2 h)","type":"qual","text":"도막을 시험하였을 때 균열, 떨어짐이 생기지 않아야 한다"},{"key":"g3_i11","label":"나이프 시험","note":"","desc":"30° 각도로 칼날을 대어 도막을 좁은 리본 모양으로 잘라 유연성·부스러짐·강인성 시험. 유광은 내굴곡성 시험편, 반광·무광은 KS M ISO 1514의 3.(강판)에 0.003cm 두께로 칠해 72시간 자연 건조 후 시험","std":"표준 서술절차","clause":"4.2.2 i)","type":"qual","text":"도막을 시험할 때 시험판에 굳게 부착되어 있어야 하며, 균열이 생기거나 떨어지지 않아야 한다. 도막을 자를 때 도막이 부스러지지 않고, 시험판에서 리본 또는 컬(curl) 상태로 잘라야 하며, 단면은 사면(斜面)이어야 한다"},{"key":"g3_i12","label":"용기 내에서의 상태","note":"","desc":"젖지 않고 안료의 침전, 케이킹이 있는지 조사. 용기를 봉하여 흔들어 혼합한 후 다시 열어 겔상 물질 또는 침전 유무를 조사","std":"표준 서술절차","clause":"4.2.2 j)","type":"qual","text":"에나멜이 충만된 용기를 열어볼 때 내용물에 피막, 굳은 덩어리, 이물 등이 없어야 하며, 안료의 침전이나 케이킹(caking), 리버링(livering) 현상이 심해서도 안 되며, 저으면 쉽게 균일한 상태가 되어야 한다"},{"key":"g3_i13","label":"저장성(용기에 차지 않았을 때)","note":"","desc":"21℃~32℃에서 48시간 및 60℃에서 7일간 저장한 후 조사","std":"KS M 5000 시험방법 2021","clause":"4.2.2 k)","type":"qual","text":"부피는 약 1L의 용기에 3/4 정도 에나멜을 채워 밀폐한 후, 온도가 21℃~32℃로 유지되는 어두운 곳에 48시간 저장하였을 때 피막이 생성되지 않아야 한다. 이 시료를 다시 60℃에서 7일 동안 저장한 후 뚜껑을 열어 보았을 때, 생성된 피막은 균일하여야 하며 쉽게 제거되어야 하고, 에나멜에 리버링, 응결, 고무상 침전물, 굳은 덩어리 등이 생기지 않아야 하며, 저으면 쉽게 균일한 상태로 되어야 한다"},{"key":"g3_i14","label":"재도장 시험","note":"","desc":"시험편을 만들어 24시간 자연 건조 후 재도장하여 검사","std":"KS M 5000 시험방법 2511","clause":"4.2.2 l)","type":"qual","text":"건조 도막에 재도장할 때 도막에 이상이 없어야 한다"},{"key":"g3_i15","label":"희석 안정성","note":"","desc":"부피비로 에나멜과 KS M 6060의 1종을 1:1로 희석하여 시험","std":"표준 서술절차","clause":"4.2.2 m)","type":"qual","text":"에나멜은 희석하였을 때 침전, 응결, 분리 현상이 없어야 하며, 안료의 약간 침전은 허용한다"},{"key":"g3_i16","label":"내수성","note":"","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm, 168시간 건조 후 18시간 (23±1)℃ 물에 침지 후 검사","std":"표준 서술절차","clause":"4.2.2 n)","type":"qual","text":"시험편을 물에서 규정된 조건으로 18시간 침지한 후 즉시 꺼내 도막을 조사할 때, 도막에 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 부착성, 색상, 광택에 별 차이가 없어야 하며, 광택은 유광 90% 이상, 반광·무광은 10% 이상 보유하고 있어야 한다"},{"key":"g3_i17","label":"내휘발유성","note":"","desc":"내수성 시험편과 같이 만들어 KS M 2611의 2호 속에 4시간 담근 후 검사","std":"표준 서술절차","clause":"4.2.2 o)","type":"qual","text":"시험편을 휘발유에서 규정된 조건으로 침지한 후 즉시 꺼내 도막을 조사할 때 도막 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 색상 및 광택이 별 차이가 없어야 한다. 다만, 적색 계통은 뽀얗게(milky) 되는 경향은 무시하나, 광택은 유광 90%, 반광, 무광은 10% 이상 보유하고 있어야 한다"},{"key":"g3_i18","label":"촉진 내후성","note":"","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm 형성, 96시간 실온 건조 후 광택·확산반사율 측정, 168시간 촉진 내후성 시험 후 재측정하여 감소율 계산, 명도지수차(ΔL)로 색 변화 결정","std":"KS M 5000 시험방법 3231","clause":"4.2.2 p)","type":"qual","text":"시험을 한 도막에 초킹이 없어야 하며, 유광은 시험 전 광택이 30% 이상, 반광은 50% 이상 감소되지 않아야 하고, 색 변화는 명도차 4단위를 넘으면 안 된다. 다만, 황색 계통은 6단위를 넘으면 안 된다"},{"key":"g3_i19","label":"유해 물질 사용 금지","note":"표 2 비고 사항(등급별 구분 없이 공통 적용)","desc":"-","std":"해당 없음","clause":"표2 비고","type":"qual","text":"제조자는 도료에 벤젠, 염소화 탄화수소 및 기타 독성 물질 같은 해로운 것을 넣어서는 안 된다"}]},{"id":"표2__2종__반광","표":"표2","종류":"2종","등급":"반광","label":"2종 반광 (자연 건조형 에나멜 반광)","items":[{"key":"g4_i0","label":"비휘발분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":62,"max":null},{"key":"g4_i1","label":"비휘발분(에나멜에 대한 %)-기타 색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":55,"max":null},{"key":"g4_i2","label":"비휘발 전색제분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":23,"max":null},{"key":"g4_i3","label":"비휘발 전색제분(에나멜에 대한 %)-기타 색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":22,"max":null},{"key":"g4_i4","label":"은폐율(%)-흰색","note":"","desc":"필름 애플리케이터 두께 반광·무광 약 0.0038cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":88,"max":null},{"key":"g4_i5","label":"은폐율(%)-담색, 기타 색","note":"","desc":"필름 애플리케이터 두께 반광·무광 약 0.0038cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":88,"max":null},{"key":"g4_i6","label":"광택 60°(초기)","note":"","desc":"유리판에 젖은 도막 두께 반광·무광 약 0.0053cm로 필름 애플리케이터로 도막을 만들고 48시간 건조 후 측정","std":"KS M ISO 2813","clause":"4.2.2 e)","type":"numeric","min":25,"max":50},{"key":"g4_i7","label":"45°,0° 확산 반사율(흰색 에나멜에 한한다)","note":"","desc":"48시간 건조시킨 후 측정","std":"KS M 5000 시험방법 3121","clause":"4.2.2 f)","type":"numeric","min":83,"max":null},{"key":"g4_i8","label":"건조 시간(시간)-지촉 건조","note":"","desc":"지촉건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":2},{"key":"g4_i9","label":"건조 시간(시간)-고화 건조","note":"","desc":"고화건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":8},{"key":"g4_i10","label":"내굴곡성","note":"","desc":"주석판(KS M ISO 1514) 건조 도막 0.026mm, 18시간 자연 건조 후 (105±5)℃ 96시간 유지, 실온 30분 냉각 후 유광은 지름 0.318cm, 반광·무광은 지름 0.635cm 맨드릴 봉에 굽혀 7배 확대경으로 조사","std":"KS M ISO 1519","clause":"4.2.2 h)","type":"qual","text":"도막을 시험하였을 때 균열, 떨어짐이 생기지 않아야 한다"},{"key":"g4_i11","label":"나이프 시험","note":"","desc":"30° 각도로 칼날을 대어 도막을 좁은 리본 모양으로 잘라 유연성·부스러짐·강인성 시험. 유광은 내굴곡성 시험편, 반광·무광은 KS M ISO 1514의 3.(강판)에 0.003cm 두께로 칠해 72시간 자연 건조 후 시험","std":"표준 서술절차","clause":"4.2.2 i)","type":"qual","text":"도막을 시험할 때 시험판에 굳게 부착되어 있어야 하며, 균열이 생기거나 떨어지지 않아야 한다. 도막을 자를 때 도막이 부스러지지 않고, 시험판에서 리본 또는 컬(curl) 상태로 잘라야 하며, 단면은 사면(斜面)이어야 한다"},{"key":"g4_i12","label":"용기 내에서의 상태","note":"","desc":"젖지 않고 안료의 침전, 케이킹이 있는지 조사. 용기를 봉하여 흔들어 혼합한 후 다시 열어 겔상 물질 또는 침전 유무를 조사","std":"표준 서술절차","clause":"4.2.2 j)","type":"qual","text":"에나멜이 충만된 용기를 열어볼 때 내용물에 피막, 굳은 덩어리, 이물 등이 없어야 하며, 안료의 침전이나 케이킹(caking), 리버링(livering) 현상이 심해서도 안 되며, 저으면 쉽게 균일한 상태가 되어야 한다"},{"key":"g4_i13","label":"저장성(용기에 차지 않았을 때)","note":"","desc":"21℃~32℃에서 48시간 및 60℃에서 7일간 저장한 후 조사","std":"KS M 5000 시험방법 2021","clause":"4.2.2 k)","type":"qual","text":"부피는 약 1L의 용기에 3/4 정도 에나멜을 채워 밀폐한 후, 온도가 21℃~32℃로 유지되는 어두운 곳에 48시간 저장하였을 때 피막이 생성되지 않아야 한다. 이 시료를 다시 60℃에서 7일 동안 저장한 후 뚜껑을 열어 보았을 때, 생성된 피막은 균일하여야 하며 쉽게 제거되어야 하고, 에나멜에 리버링, 응결, 고무상 침전물, 굳은 덩어리 등이 생기지 않아야 하며, 저으면 쉽게 균일한 상태로 되어야 한다"},{"key":"g4_i14","label":"재도장 시험","note":"","desc":"시험편을 만들어 24시간 자연 건조 후 재도장하여 검사","std":"KS M 5000 시험방법 2511","clause":"4.2.2 l)","type":"qual","text":"건조 도막에 재도장할 때 도막에 이상이 없어야 한다"},{"key":"g4_i15","label":"희석 안정성","note":"","desc":"부피비로 에나멜과 KS M 6060의 1종을 1:1로 희석하여 시험","std":"표준 서술절차","clause":"4.2.2 m)","type":"qual","text":"에나멜은 희석하였을 때 침전, 응결, 분리 현상이 없어야 하며, 안료의 약간 침전은 허용한다"},{"key":"g4_i16","label":"내수성","note":"","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm, 168시간 건조 후 18시간 (23±1)℃ 물에 침지 후 검사","std":"표준 서술절차","clause":"4.2.2 n)","type":"qual","text":"시험편을 물에서 규정된 조건으로 18시간 침지한 후 즉시 꺼내 도막을 조사할 때, 도막에 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 부착성, 색상, 광택에 별 차이가 없어야 하며, 광택은 유광 90% 이상, 반광·무광은 10% 이상 보유하고 있어야 한다"},{"key":"g4_i17","label":"내휘발유성","note":"","desc":"내수성 시험편과 같이 만들어 KS M 2611의 2호 속에 4시간 담근 후 검사","std":"표준 서술절차","clause":"4.2.2 o)","type":"qual","text":"시험편을 휘발유에서 규정된 조건으로 침지한 후 즉시 꺼내 도막을 조사할 때 도막 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 색상 및 광택이 별 차이가 없어야 한다. 다만, 적색 계통은 뽀얗게(milky) 되는 경향은 무시하나, 광택은 유광 90%, 반광, 무광은 10% 이상 보유하고 있어야 한다"},{"key":"g4_i18","label":"촉진 내후성","note":"","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm 형성, 96시간 실온 건조 후 광택·확산반사율 측정, 168시간 촉진 내후성 시험 후 재측정하여 감소율 계산, 명도지수차(ΔL)로 색 변화 결정","std":"KS M 5000 시험방법 3231","clause":"4.2.2 p)","type":"qual","text":"시험을 한 도막에 초킹이 없어야 하며, 유광은 시험 전 광택이 30% 이상, 반광은 50% 이상 감소되지 않아야 하고, 색 변화는 명도차 4단위를 넘으면 안 된다. 다만, 황색 계통은 6단위를 넘으면 안 된다"},{"key":"g4_i19","label":"유해 물질 사용 금지","note":"표 2 비고 사항(등급별 구분 없이 공통 적용)","desc":"-","std":"해당 없음","clause":"표2 비고","type":"qual","text":"제조자는 도료에 벤젠, 염소화 탄화수소 및 기타 독성 물질 같은 해로운 것을 넣어서는 안 된다"}]},{"id":"표2__2종__무광","표":"표2","종류":"2종","등급":"무광","label":"2종 무광 (자연 건조형 에나멜 무광)","items":[{"key":"g5_i0","label":"비휘발분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":64,"max":null},{"key":"g5_i1","label":"비휘발분(에나멜에 대한 %)-기타 색","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.2.2 b)","type":"numeric","min":58,"max":null},{"key":"g5_i2","label":"비휘발 전색제분(에나멜에 대한 %)-흰색, 담색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":18,"max":null},{"key":"g5_i3","label":"비휘발 전색제분(에나멜에 대한 %)-기타 색","note":"","desc":"비휘발분(%) − 안료분(%) = 비휘발 전색제분(%)으로 계산","std":"KS M 5000 시험방법 2112","clause":"4.2.2 c)","type":"numeric","min":18,"max":null},{"key":"g5_i4","label":"은폐율(%)-흰색","note":"","desc":"필름 애플리케이터 두께 반광·무광 약 0.0038cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":92,"max":null},{"key":"g5_i5","label":"은폐율(%)-담색, 기타 색","note":"","desc":"필름 애플리케이터 두께 반광·무광 약 0.0038cm로 조절, 120℃ 45분 가열 건조 후 백색·흑색 컬러유리 등에 칠해 72시간 자연 건조 후 측정","std":"KS M ISO 2814","clause":"4.2.2 d)","type":"numeric","min":94,"max":null},{"key":"g5_i6","label":"광택 60°(초기)","note":"","desc":"유리판에 젖은 도막 두께 반광·무광 약 0.0053cm로 필름 애플리케이터로 도막을 만들고 48시간 건조 후 측정","std":"KS M ISO 2813","clause":"4.2.2 e)","type":"numeric","min":null,"max":6},{"key":"g5_i7","label":"45°,0° 확산 반사율(흰색 에나멜에 한한다)","note":"","desc":"48시간 건조시킨 후 측정","std":"KS M 5000 시험방법 3121","clause":"4.2.2 f)","type":"numeric","min":83,"max":null},{"key":"g5_i8","label":"건조 시간(시간)-지촉 건조","note":"","desc":"지촉건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":2},{"key":"g5_i9","label":"건조 시간(시간)-고화 건조","note":"","desc":"고화건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.2.2 g)","type":"numeric","min":null,"max":8},{"key":"g5_i10","label":"내굴곡성","note":"","desc":"주석판(KS M ISO 1514) 건조 도막 0.026mm, 18시간 자연 건조 후 (105±5)℃ 96시간 유지, 실온 30분 냉각 후 유광은 지름 0.318cm, 반광·무광은 지름 0.635cm 맨드릴 봉에 굽혀 7배 확대경으로 조사","std":"KS M ISO 1519","clause":"4.2.2 h)","type":"qual","text":"도막을 시험하였을 때 균열, 떨어짐이 생기지 않아야 한다"},{"key":"g5_i11","label":"나이프 시험","note":"","desc":"30° 각도로 칼날을 대어 도막을 좁은 리본 모양으로 잘라 유연성·부스러짐·강인성 시험. 유광은 내굴곡성 시험편, 반광·무광은 KS M ISO 1514의 3.(강판)에 0.003cm 두께로 칠해 72시간 자연 건조 후 시험","std":"표준 서술절차","clause":"4.2.2 i)","type":"qual","text":"도막을 시험할 때 시험판에 굳게 부착되어 있어야 하며, 균열이 생기거나 떨어지지 않아야 한다. 도막을 자를 때 도막이 부스러지지 않고, 시험판에서 리본 또는 컬(curl) 상태로 잘라야 하며, 단면은 사면(斜面)이어야 한다"},{"key":"g5_i12","label":"용기 내에서의 상태","note":"","desc":"젖지 않고 안료의 침전, 케이킹이 있는지 조사. 용기를 봉하여 흔들어 혼합한 후 다시 열어 겔상 물질 또는 침전 유무를 조사","std":"표준 서술절차","clause":"4.2.2 j)","type":"qual","text":"에나멜이 충만된 용기를 열어볼 때 내용물에 피막, 굳은 덩어리, 이물 등이 없어야 하며, 안료의 침전이나 케이킹(caking), 리버링(livering) 현상이 심해서도 안 되며, 저으면 쉽게 균일한 상태가 되어야 한다"},{"key":"g5_i13","label":"저장성(용기에 차지 않았을 때)","note":"","desc":"21℃~32℃에서 48시간 및 60℃에서 7일간 저장한 후 조사","std":"KS M 5000 시험방법 2021","clause":"4.2.2 k)","type":"qual","text":"부피는 약 1L의 용기에 3/4 정도 에나멜을 채워 밀폐한 후, 온도가 21℃~32℃로 유지되는 어두운 곳에 48시간 저장하였을 때 피막이 생성되지 않아야 한다. 이 시료를 다시 60℃에서 7일 동안 저장한 후 뚜껑을 열어 보았을 때, 생성된 피막은 균일하여야 하며 쉽게 제거되어야 하고, 에나멜에 리버링, 응결, 고무상 침전물, 굳은 덩어리 등이 생기지 않아야 하며, 저으면 쉽게 균일한 상태로 되어야 한다"},{"key":"g5_i14","label":"재도장 시험","note":"","desc":"시험편을 만들어 24시간 자연 건조 후 재도장하여 검사","std":"KS M 5000 시험방법 2511","clause":"4.2.2 l)","type":"qual","text":"건조 도막에 재도장할 때 도막에 이상이 없어야 한다"},{"key":"g5_i15","label":"희석 안정성","note":"","desc":"부피비로 에나멜과 KS M 6060의 1종을 1:1로 희석하여 시험","std":"표준 서술절차","clause":"4.2.2 m)","type":"qual","text":"에나멜은 희석하였을 때 침전, 응결, 분리 현상이 없어야 하며, 안료의 약간 침전은 허용한다"},{"key":"g5_i16","label":"내수성","note":"","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm, 168시간 건조 후 18시간 (23±1)℃ 물에 침지 후 검사","std":"표준 서술절차","clause":"4.2.2 n)","type":"qual","text":"시험편을 물에서 규정된 조건으로 18시간 침지한 후 즉시 꺼내 도막을 조사할 때, 도막에 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 부착성, 색상, 광택에 별 차이가 없어야 하며, 광택은 유광 90% 이상, 반광·무광은 10% 이상 보유하고 있어야 한다"},{"key":"g5_i17","label":"내휘발유성","note":"","desc":"내수성 시험편과 같이 만들어 KS M 2611의 2호 속에 4시간 담근 후 검사","std":"표준 서술절차","clause":"4.2.2 o)","type":"qual","text":"시험편을 휘발유에서 규정된 조건으로 침지한 후 즉시 꺼내 도막을 조사할 때 도막 주름이나 부풀어오름이 없어야 한다. 2시간 경과 후 백화, 연화, 흐림과 같은 현상이 없어야 하며, 24시간 경과 후 침지 시험을 하지 않은 도막과 비교할 때 경도, 색상 및 광택이 별 차이가 없어야 한다. 다만, 적색 계통은 뽀얗게(milky) 되는 경향은 무시하나, 광택은 유광 90%, 반광, 무광은 10% 이상 보유하고 있어야 한다"},{"key":"g5_i18","label":"촉진 내후성","note":"무광에 대한 광택 감소율 기준은 원문 표에 별도로 명시되지 않음(유광 30%, 반광 50% 기준만 명시)","desc":"주석판(KS M ISO 1514)에 젖은 도막 0.0051cm 형성, 96시간 실온 건조 후 광택·확산반사율 측정, 168시간 촉진 내후성 시험 후 재측정하여 감소율 계산, 명도지수차(ΔL)로 색 변화 결정","std":"KS M 5000 시험방법 3231","clause":"4.2.2 p)","type":"qual","text":"시험을 한 도막에 초킹이 없어야 하며, 색 변화는 명도차 4단위를 넘으면 안 된다. 다만, 황색 계통은 6단위를 넘으면 안 된다"},{"key":"g5_i19","label":"유해 물질 사용 금지","note":"표 2 비고 사항(등급별 구분 없이 공통 적용)","desc":"-","std":"해당 없음","clause":"표2 비고","type":"qual","text":"제조자는 도료에 벤젠, 염소화 탄화수소 및 기타 독성 물질 같은 해로운 것을 넣어서는 안 된다"}]},{"id":"표3__3종__-","표":"표3","종류":"3종","등급":"-","label":"3종 (알루미늄 도료)","items":[{"key":"g6_i0","label":"용기 내에서의 상태","note":"","desc":"용기 내 상태 확인","std":"KS M 5000 시험방법 2011","clause":"4.3.2 b)","type":"qual","text":"침전물 덩어리, 응결, 피막 등이 없고, 교반할 때 쉽고 균일하게 분산되어야 한다"},{"key":"g6_i1","label":"고착 건조(시간)","note":"","desc":"고착 건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.3.2 c)","type":"numeric","min":null,"max":16},{"key":"g6_i2","label":"광택(60°)","note":"원문에 인용표준이 은폐율 항목과 동일하게 'KS M ISO 2814'로 표기됨(인쇄 오류 가능성, 원문 그대로 기록)","desc":"KS M ISO 1514에 따라 제작한 유리판에 젖은 도막 두께 약 100㎛로 칠하고 48시간 건조 후 측정","std":"KS M ISO 2814(원문 표기)","clause":"4.3.2 d)","type":"numeric","min":100,"max":null},{"key":"g6_i3","label":"은폐율(%)","note":"","desc":"평활한 유리판에 은폐지를 밀착 고정하고 젖은 도막 두께 약 100㎛로 칠해 48시간 건조 후 측정, 시험편 2매 평균","std":"KS M ISO 2814","clause":"4.3.2 e)","type":"numeric","min":94,"max":null},{"key":"g6_i4","label":"내수성","note":"","desc":"시험편 3매 중 2매는 (20±1)℃ 탈이온수에 18시간 침지 후 부풂·갈라짐·벗겨짐 조사, 1매는 용매로 벗겨내 바탕의 녹 발생 여부 조사","std":"KS M ISO 1514의 3.에 따라 제작한 철판(150mm×70mm×0.8mm)","clause":"4.3.2 f)","type":"qual","text":"20℃의 물에 18시간 담갔을 때 이상이 없고, 도막을 벗겨냈을 때 바탕에 녹이 없어야 한다"},{"key":"g6_i5","label":"내굴곡성","note":"","desc":"주석판(150mm×70mm×0.3mm) 건조 도막 25㎛, 72시간 자연 건조 후 (105±5)℃ 5시간 유지, 실온 1시간 냉각 후 지름 10mm 맨드릴 봉에 굽혀 7배 확대경으로 조사","std":"KS M ISO 1519","clause":"4.3.2 g)","type":"qual","text":"갈라짐이나 벗겨짐이 없어야 한다"},{"key":"g6_i6","label":"비휘발분(%)","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.3.2 h)","type":"numeric","min":45,"max":null},{"key":"g6_i7","label":"촉진 내후성","note":"","desc":"철판 양면에 방청 도료 하도 후 시료를 젖은 도막 30㎛로 칠해 240시간 노출 후 조사","std":"KS M ISO 1514에 규정된 철판; KS M 5000 시험방법 3231의 3. 또는 4.","clause":"4.3.2 i)","type":"qual","text":"부풂, 벗겨짐, 갈라짐이 없고 색의 변화가 심하지 않아야 한다"}]},{"id":"표4__4종__-","표":"표4","종류":"4종","등급":"-","label":"4종 (아크릴 도료)","items":[{"key":"g7_i0","label":"비휘발분(%)","note":"","desc":"가열 후 잔류하는 비휘발분 함량 측정","std":"KS M ISO 3251","clause":"4.4.2 b)","type":"numeric","min":37,"max":null},{"key":"g7_i1","label":"비휘발 전색제분(%)","note":"","desc":"도료에 대한 질량 백분율로 계산","std":"KS M 5000 시험방법 2112","clause":"4.4.2 c)","type":"numeric","min":35,"max":null},{"key":"g7_i2","label":"은폐율(%)","note":"특록색, 특청색, 빨간색 및 노란색 등 투명성 레이크 안료를 사용한 도료는 은폐율을 적용하지 않음","desc":"젖은 도막 두께 최대 0.1mm가 되도록 함","std":"KS M ISO 2814","clause":"4.4.2 d)","type":"numeric","min":90,"max":null},{"key":"g7_i3","label":"광택 60°(초기)","note":"","desc":"유리판(약 25cm×7cm×0.3cm)에 젖은 도막 약 0.076mm로 도포, 12시간 이상 건조 후 측정","std":"KS M ISO 2813","clause":"4.4.2 e)","type":"numeric","min":80,"max":null},{"key":"g7_i4","label":"건조 시간(분)-지촉","note":"","desc":"지촉건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.4.2 f)","type":"numeric","min":null,"max":30},{"key":"g7_i5","label":"건조 시간(분)-경화","note":"","desc":"경화건조 시간 측정","std":"KS M 5000 시험방법 2511","clause":"4.4.2 f)","type":"numeric","min":null,"max":120},{"key":"g7_i6","label":"용기 내에서의 상태","note":"","desc":"용기 내 상태 확인","std":"KS M 5000 시험방법 2011","clause":"4.4.2 g)","type":"qual","text":"도료는 충만된 용기를 열어 보았을 때 내용물에 피막, 굳은 덩어리, 이물 등이 없어야 하며, 저었을 때 쉽게 균일한 상태로 되어야 한다"},{"key":"g7_i7","label":"희석 안정성","note":"","desc":"도료와 자일렌을 1:1 부피 비율로 희석하여 시험","std":"표준 서술절차","clause":"4.4.2 h)","type":"qual","text":"도료를 희석하였을 때 침전, 응결, 분리 현상이 심하지 않아야 하며, 약간의 안료 침전은 허용한다"},{"key":"g7_i8","label":"재도장 시험","note":"","desc":"시험편을 만들어 24시간 건조 후 재도장하여 조사","std":"KS M 5000 시험방법 2511","clause":"4.4.2 i)","type":"qual","text":"건조된 도막에 재도장할 때 도막의 부풂 등의 이상이 없어야 한다"},{"key":"g7_i9","label":"내수성","note":"","desc":"시험판 KS L 5114 평형 슬레이트(150mm×70mm×3mm)에 젖은 도막 (0.1±0.01)mm, 72시간 실온 건조 후 뒷면·주위 파라핀왁스 도포, 24시간 침지 후 검사","std":"표준 서술절차","clause":"4.4.2 j)","type":"qual","text":"시험편을 규정된 조건으로 침지한 후 꺼내어 즉시 도막을 조사할 때 도막에 주름이나 물집이 없어야 한다. 2시간 지난 후 백화, 연화, 흐름과 같은 현상이 없어야 하며, 24시간 지난 후 시험을 하지 않은 도막과 비교할 때 경도, 부착성에 별 차이가 없고, 광택은 적어도 90% 이상 보유하고 있어야 한다"},{"key":"g7_i10","label":"촉진 내후성","note":"","desc":"시험판 KS L 5114 평형 슬레이트(150mm×70mm×6mm)에 젖은 도막 최대 0.1mm, 72시간 실온 건조 후 광택 측정, 240시간 촉진 내후성 시험 후 재측정하여 감소율 계산, 명도지수차(ΔL)로 색 변화 결정","std":"KS M 5000 시험방법 3231; 색변화 판정 시험방법 3031","clause":"4.4.2 k)","type":"qual","text":"시험을 한 도막에 초킹 현상이 없어야 하고, 시험 전 도막 광택이 30% 이상 감소되지 않아야 하며, 색 변화는 명도차 6단위를 넘으면 안 된다"},{"key":"g7_i11","label":"내알칼리성","note":"","desc":"내수성과 같이 만든 시험편을 수산화 칼슘 포화 용액에 18시간 침지 후 꺼내어 검사","std":"표준 서술절차","clause":"4.4.2 l)","type":"qual","text":"시험편을 규정된 조건으로 침지한 후 도막을 조사할 때 갈라짐, 부풂, 주름현상이 없고, 광택이 20% 이상 감소되지 않아야 하며, 색 변화는 명도차 6단위를 넘으면 안 된다"},{"key":"g7_i12","label":"시험판(슬레이트) 사용 조건","note":"4.4.2 j),k),l) 내수성/촉진내후성/내알칼리성 시험판 공통 규정","desc":"-","std":"KS L 5114","clause":"4.4 비고","type":"qual","text":"KS L 5114에 규정된 평형 슬레이트로, 제조일로부터 28일 이상 경과되어 충분히 양생되고, 함수율이 10% 이하인 완전 건조된 것이어야 하며, 고른 면을 사용하는 것을 원칙으로 한다"}]}]}};
 
 const EXAMPLE_SAMPLES = [
-  {id:'example-001', sampleName:'예시-001', category:'수성', type:'무광 우레탄', inspector:'검사자1', date:'2026-09-11',
-    values:{viscosity:82,dryTime:40,adhesion:5,gloss:65,hiding:99,deltaE:0.6,solids:48,gravity:1.32,voc:60},
-    results:{viscosity:'pass',dryTime:'pass',adhesion:'pass',gloss:'pass',hiding:'pass',deltaE:'pass',solids:'pass',gravity:'pass',voc:'pass'},
-    overall:'pass', unfilled:0, specSnapshot:clone(SPEC_DEFAULT), createdAt:'2026-09-11T09:00:00.000Z'},
-  {id:'example-002', sampleName:'예시-002', category:'유성', type:'방청도료', inspector:'검사자2', date:'2026-09-10',
-    values:{viscosity:105,dryTime:55,adhesion:4,gloss:58,hiding:97,deltaE:1.4,solids:50,gravity:1.28,voc:130},
-    results:{viscosity:'fail',dryTime:'pass',adhesion:'pass',gloss:'fail',hiding:'fail',deltaE:'fail',solids:'pass',gravity:'pass',voc:'fail'},
-    overall:'fail', unfilled:0, specSnapshot:clone(SPEC_DEFAULT), createdAt:'2026-09-10T09:00:00.000Z'},
+  {id:'example-001', sampleName:'예시-001', category:'수성', gradeId:'표1__1종__1급', type:'외부용 수성 마감재', inspector:'검사자1',
+    mfgDate:'2026-09-10', date:'2026-09-11',
+    values:{g0_i0:95, g0_i1:60, g0_i2:30, g0_i3:45, g0_i4:90, g0_i6:97, g0_i7:99, g0_i8:1500, g0_i11:1},
+    qual:{g0_i9:'pass', g0_i10:'pass', g0_i12:'pass', g0_i13:'pass', g0_i14:'pass'},
+    results:{g0_i0:'pass',g0_i1:'pass',g0_i2:'pass',g0_i3:'pass',g0_i4:'pass',g0_i6:'pass',g0_i7:'pass',g0_i8:'pass',g0_i9:'pass',g0_i10:'pass',g0_i11:'pass',g0_i12:'pass',g0_i13:'pass',g0_i14:'pass'},
+    overall:'pass', unfilled:0, specSnapshot:null, createdAt:'2026-09-11T09:00:00.000Z'},
+  {id:'example-002', sampleName:'예시-002', category:'유성', gradeId:'표1__1종__1급', type:'방청도료', inspector:'검사자2',
+    mfgDate:'2026-09-08', date:'2026-09-10',
+    values:{g0_i0:60, g0_i2:50, g0_i5:55, g0_i6:90, g0_i7:80, g0_i8:60},
+    qual:{g0_i4:'pass', g0_i9:'pass', g0_i10:'fail', g0_i11:'pass'},
+    results:{g0_i0:'fail',g0_i2:'fail',g0_i5:'fail',g0_i6:'fail',g0_i7:'fail',g0_i8:'fail',g0_i4:'pass',g0_i9:'pass',g0_i10:'fail',g0_i11:'pass'},
+    overall:'fail', unfilled:2, specSnapshot:null, createdAt:'2026-09-10T09:00:00.000Z'},
 ];
+// fill in specSnapshot from KS_SPECS at load time so example rows render correctly
+EXAMPLE_SAMPLES.forEach(s=>{
+  const grade = (KS_SPECS[s.category]||{grades:[]}).grades.find(g=>g.id===s.gradeId);
+  s.gradeLabel = grade ? grade.label : s.gradeId;
+  s.specSnapshot = grade ? clone(grade.items) : [];
+});
 
-let specItems = clone(SPEC_DEFAULT);
 let samples = [];
 let selectedCat = null;
-let specEditMode = false;
+let selectedGradeId = null;
+let currentItems = [];
+let qualChoice = {};
 let db = null, useDb = false;
 
 function clone(x){ return JSON.parse(JSON.stringify(x)); }
-function fmtNum(n){ if(n==null) return ''; return Number.isInteger(n)? String(n) : String(n); }
-function specHint(s){
-  if(s.min!=null && s.max!=null) return `${fmtNum(s.min)}~${fmtNum(s.max)} ${s.unit}`.trim();
-  if(s.min!=null) return `≥ ${fmtNum(s.min)} ${s.unit}`.trim();
-  if(s.max!=null) return `≤ ${fmtNum(s.max)} ${s.unit}`.trim();
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function fmtNum(n){ if(n==null) return ''; return String(n); }
+function specHint(item){
+  if(item.type!=='numeric') return item.text || '육안/서술 판정';
+  if(item.min!=null && item.max!=null) return `${fmtNum(item.min)}~${fmtNum(item.max)}`;
+  if(item.min!=null) return `≥ ${fmtNum(item.min)}`;
+  if(item.max!=null) return `≤ ${fmtNum(item.max)}`;
   return '제한없음';
 }
-function judge(val, spec){
+function judge(val, item){
   if(val===null||val===undefined||val==='') return null;
   const n = Number(val);
   if(Number.isNaN(n)) return null;
-  if(spec.min!=null && n<spec.min) return 'fail';
-  if(spec.max!=null && n>spec.max) return 'fail';
+  if(item.min!=null && n<item.min) return 'fail';
+  if(item.max!=null && n>item.max) return 'fail';
   return 'pass';
 }
 function todayStr(){ return new Date().toISOString().slice(0,10); }
+function tipFor(item){
+  let t = item.desc || '';
+  if(item.std) t += (t?' | ':'') + '인용표준: '+item.std;
+  return t;
+}
+
+function gradesForCat(cat){ return (KS_SPECS[cat] && KS_SPECS[cat].grades) || []; }
+function findGrade(cat, gradeId){ return gradesForCat(cat).find(g=>g.id===gradeId); }
 
 /* ---------- store (db capability with localStorage fallback) ---------- */
 async function initStore(){
@@ -519,15 +581,9 @@ async function initStore(){
   if(db){
     useDb = true;
     setMode(true);
-    db.doc('specs/default').onSnapshot(snap=>{
-      if(!specEditMode){
-        specItems = (snap.exists && snap.data().items) ? snap.data().items : clone(SPEC_DEFAULT);
-        renderSpec(); renderMeasureGrid();
-      }
-    }, ()=>{});
     db.doc('meta/inspectors').onSnapshot(snap=>{
       INSPECTORS = (snap.exists && snap.data().names && snap.data().names.length) ? snap.data().names : clone(INSPECTOR_DEFAULT);
-      renderInspectorSelect(); renderInspectorStats();
+      renderInspectorSelect(); renderInspectorStats(); renderInspectorFilterChips();
     }, ()=>{});
     db.collection('samples').orderBy('createdAt','desc').limit(500).onSnapshot(snap=>{
       samples = snap.docs.map(d=>({id:d.id, ...d.data()}));
@@ -536,16 +592,18 @@ async function initStore(){
   } else {
     useDb = false;
     setMode(false);
-    try{ const s = localStorage.getItem('paintqc_specs'); if(s) specItems = JSON.parse(s); }catch(e){}
     try{ const ins = localStorage.getItem('paintqc_inspectors'); if(ins) INSPECTORS = JSON.parse(ins); }catch(e){}
     renderInspectorSelect();
     try{
-      const sa = localStorage.getItem('paintqc_samples');
+      const sa = localStorage.getItem('paintqc_samples_v2');
       if(sa) samples = JSON.parse(sa);
-      else { samples = clone(EXAMPLE_SAMPLES); localStorage.setItem('paintqc_samples', JSON.stringify(samples)); }
+      else { samples = clone(EXAMPLE_SAMPLES); localStorage.setItem('paintqc_samples_v2', JSON.stringify(samples)); }
     }catch(e){}
-    renderSpec(); renderMeasureGrid(); renderSamplesUI();
+    renderSamplesUI();
   }
+  renderInspectorFilterChips();
+  initCalendarSelectors();
+  renderCalendar();
 }
 function renderSamplesUI(){
   renderStats(); renderInspectorStats(); renderHistory(); renderCalendar(); renderCalDetails();
@@ -556,16 +614,6 @@ function setMode(connected){
   if(connected){ dot.classList.remove('local'); txt.textContent = '팀 공유 저장소 연결됨'; }
   else { dot.classList.add('local'); txt.textContent = '이 브라우저에만 저장 (오프라인 모드)'; }
 }
-async function persistSpecs(items){
-  specItems = items;
-  if(useDb){
-    try{ await db.doc('specs/default').set({items}); }
-    catch(e){ alert('기준값 저장 실패: '+e.message); }
-  } else {
-    try{ localStorage.setItem('paintqc_specs', JSON.stringify(items)); }catch(e){}
-  }
-  renderSpec(); renderMeasureGrid(); renderHistory();
-}
 async function persistNewSample(sample){
   if(useDb){
     try{ await db.collection('samples').add(sample); }
@@ -573,7 +621,7 @@ async function persistNewSample(sample){
   } else {
     sample.id = 's_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
     samples.unshift(sample);
-    try{ localStorage.setItem('paintqc_samples', JSON.stringify(samples)); }catch(e){}
+    try{ localStorage.setItem('paintqc_samples_v2', JSON.stringify(samples)); }catch(e){}
     renderSamplesUI();
   }
 }
@@ -583,7 +631,7 @@ async function removeSample(id){
     catch(e){ alert('삭제 실패: '+e.message); }
   } else {
     samples = samples.filter(s=>s.id!==id);
-    try{ localStorage.setItem('paintqc_samples', JSON.stringify(samples)); }catch(e){}
+    try{ localStorage.setItem('paintqc_samples_v2', JSON.stringify(samples)); }catch(e){}
     renderSamplesUI();
   }
 }
@@ -591,12 +639,37 @@ async function removeSample(id){
 /* ---------- calendar ---------- */
 let calMonth = new Date();
 let calSelected = todayStr();
+function initCalendarSelectors(){
+  const yearSel = document.getElementById('calYearSel');
+  const monthSel = document.getElementById('calMonthSel');
+  const curY = new Date().getFullYear();
+  let yearOpts = '';
+  for(let y=curY-5; y<=curY+5; y++) yearOpts += `<option value="${y}">${y}년</option>`;
+  yearSel.innerHTML = yearOpts;
+  let monthOpts = '';
+  for(let m=1; m<=12; m++) monthOpts += `<option value="${m}">${m}월</option>`;
+  monthSel.innerHTML = monthOpts;
+  yearSel.addEventListener('change', ()=>{
+    calMonth = new Date(Number(yearSel.value), calMonth.getMonth(), 1);
+    renderCalendar(); renderStats(); renderInspectorStats();
+  });
+  monthSel.addEventListener('change', ()=>{
+    calMonth = new Date(calMonth.getFullYear(), Number(monthSel.value)-1, 1);
+    renderCalendar(); renderStats(); renderInspectorStats();
+  });
+  document.getElementById('calTodayBtn').addEventListener('click', ()=>{
+    calMonth = new Date();
+    calSelected = todayStr();
+    renderCalendar(); renderCalDetails(); renderStats(); renderInspectorStats();
+  });
+}
 function renderCalendar(){
   const y = calMonth.getFullYear(), m = calMonth.getMonth();
-  document.getElementById('calLabel').textContent = `${y}년 ${m+1}월`;
+  document.getElementById('calYearSel').value = String(y);
+  document.getElementById('calMonthSel').value = String(m+1);
   const firstDow = new Date(y,m,1).getDay();
   const daysInMonth = new Date(y,m+1,0).getDate();
-  const dateSet = new Set(samples.map(s=>s.date));
+  const dateSet = new Set(samples.map(s=>s.mfgDate));
   const dow = ['일','월','화','수','목','금','토'];
   let cells = dow.map(d=>`<div class="cal-dow">${d}</div>`).join('');
   for(let i=0;i<firstDow;i++) cells += `<div class="cal-cell empty"></div>`;
@@ -621,15 +694,15 @@ function renderCalDetails(){
   const box = document.getElementById('calDetails');
   if(!calSelected){ box.hidden = true; box.innerHTML = ''; return; }
   box.hidden = false;
-  const list = samples.filter(s=>s.date===calSelected);
+  const list = samples.filter(s=>s.mfgDate===calSelected);
   if(list.length===0){
-    box.innerHTML = `<div class="cal-detail-date">${calSelected}</div><div class="cal-detail-empty">등록된 시험이 없습니다.</div>`;
+    box.innerHTML = `<div class="cal-detail-date">${calSelected} · 제조일 기준</div><div class="cal-detail-empty">등록된 샘플이 없습니다.</div>`;
   } else {
-    box.innerHTML = `<div class="cal-detail-date">${calSelected} · ${list.length}건</div>` + list.map(s=>`
+    box.innerHTML = `<div class="cal-detail-date">${calSelected} · 제조일 기준 ${list.length}건</div>` + list.map(s=>`
       <div class="cal-detail-row">
         <div>
           <div class="cal-detail-name">${s.sampleName}</div>
-          <div class="cal-detail-sub">${s.category}·${s.type||'—'} · ${s.inspector||'—'}</div>
+          <div class="cal-detail-sub">${s.category}·${s.type||'—'} · ${s.inspector||'—'} · 평가일 ${s.date||'—'}</div>
         </div>
         <span class="pill ${s.overall}">${s.overall==='pass'?'합격':'불합격'}</span>
       </div>`).join('');
@@ -648,72 +721,91 @@ document.getElementById('calNext').addEventListener('click', ()=>{
   renderInspectorStats();
 });
 
-/* ---------- spec panel ---------- */
-function renderSpec(){
-  const body = document.getElementById('specBody');
-  if(!specEditMode){
-    let rows = specItems.map(s=>`
-      <tr>
-        <td class="item-label">${s.label}</td>
-        <td class="unit">${s.unit||'—'}</td>
-        <td class="spec-hint">${specHint(s)}</td>
-      </tr>`).join('');
-    body.innerHTML = `<table><thead><tr><th>항목</th><th>단위</th><th>합격 기준</th></tr></thead><tbody>${rows}</tbody></table>
-      <p style="font-size:11.5px;color:var(--text-dim);margin:10px 0 0;">예시 기준값이 채워져 있습니다. 실제 사내 규격값으로 수정해 사용하세요.</p>`;
-    document.getElementById('specEditBtn').textContent = '기준값 수정';
-  } else {
-    let rows = specItems.map((s,i)=>`
-      <tr>
-        <td class="item-label">${s.label}</td>
-        <td class="unit">${s.unit||'—'}</td>
-        <td class="num"><input type="number" step="any" data-i="${i}" data-b="min" value="${s.min==null?'':s.min}" placeholder="제한없음"></td>
-        <td class="num"><input type="number" step="any" data-i="${i}" data-b="max" value="${s.max==null?'':s.max}" placeholder="제한없음"></td>
-      </tr>`).join('');
-    body.innerHTML = `<table class="spec-table"><thead><tr><th>항목</th><th>단위</th><th>최소</th><th>최대</th></tr></thead><tbody>${rows}</tbody></table>
-      <div style="display:flex;gap:8px;margin-top:12px;">
-        <button class="btn primary" id="specSaveBtn">저장</button>
-        <button class="btn ghost" id="specCancelBtn">취소</button>
-      </div>`;
-    document.getElementById('specEditBtn').textContent = '편집 중…';
-    body.querySelectorAll('input').forEach(inp=>{
-      inp.addEventListener('input', ()=>{
-        const i = Number(inp.dataset.i), b = inp.dataset.b;
-        const v = inp.value === '' ? null : Number(inp.value);
-        specItems[i][b] = v;
-      });
-    });
-    document.getElementById('specSaveBtn').onclick = async ()=>{
-      specEditMode = false;
-      await persistSpecs(clone(specItems));
-    };
-    document.getElementById('specCancelBtn').onclick = ()=>{
-      specEditMode = false;
-      renderSpec();
-    };
+/* ---------- KS 세부규격 선택 & 기준 규격 패널 ---------- */
+function renderGradeSelect(){
+  const sel = document.getElementById('gradeInput');
+  const grades = gradesForCat(selectedCat);
+  if(!selectedCat){
+    sel.innerHTML = `<option value="">먼저 종류를 선택하세요</option>`;
+    sel.disabled = true;
+    return;
   }
+  sel.disabled = false;
+  sel.innerHTML = `<option value="">세부 규격을 선택하세요</option>` +
+    grades.map(g=>`<option value="${g.id}">${g.label}</option>`).join('');
 }
-document.getElementById('specEditBtn').addEventListener('click', ()=>{
-  specEditMode = !specEditMode;
-  renderSpec();
+document.getElementById('gradeInput').addEventListener('change', (e)=>{
+  selectedGradeId = e.target.value || null;
+  const grade = selectedGradeId ? findGrade(selectedCat, selectedGradeId) : null;
+  currentItems = grade ? grade.items : [];
+  qualChoice = {};
+  renderSpecCard();
+  renderMeasureGrid();
 });
+function renderSpecCard(){
+  const body = document.getElementById('specBody');
+  const gradeLabelEl = document.getElementById('specGradeLabel');
+  const grade = selectedGradeId ? findGrade(selectedCat, selectedGradeId) : null;
+  if(!grade){
+    gradeLabelEl.textContent = '';
+    body.innerHTML = `<div class="spec-empty">왼쪽 "샘플 판정"에서 종류와 세부 규격을 선택하면<br>해당 KS 기준표가 여기에 표시됩니다.</div>`;
+    return;
+  }
+  gradeLabelEl.textContent = (KS_SPECS[selectedCat].label)+' · '+grade.label;
+  const rows = grade.items.map(item=>{
+    const tip = esc(tipFor(item));
+    const boundCell = item.type==='numeric'
+      ? `<td class="spec-hint">${specHint(item)}</td>`
+      : `<td><span class="qual-badge">육안/서술 판정</span></td>`;
+    return `<tr>
+      <td class="item-label">${item.label}<span class="info-icon" data-tip="${tip}" tabindex="0">i</span></td>
+      ${boundCell}
+    </tr>`;
+  }).join('');
+  body.innerHTML = `<table><thead><tr><th>항목</th><th>합격 기준</th></tr></thead><tbody>${rows}</tbody></table>
+    <p style="font-size:11.5px;color:var(--text-dim);margin:10px 0 0;">항목명 옆 <span class="info-icon" data-tip="예시: 항목명에 마우스를 올리면 시험방법 설명이 보입니다." tabindex="0">i</span> 아이콘에 마우스를 올리면 시험방법 설명을 볼 수 있습니다.</p>`;
+}
 
 /* ---------- measurement entry grid ---------- */
 function renderMeasureGrid(){
   const grid = document.getElementById('measureGrid');
-  grid.innerHTML = specItems.map(s=>`
-    <div class="m-field">
-      <label>${s.label} <span class="unit">${s.unit}</span></label>
-      <input type="number" step="any" data-key="${s.key}" placeholder="값 입력">
-      <div class="hint">기준: ${specHint(s)}</div>
-    </div>
-  `).join('');
-  grid.querySelectorAll('input').forEach(inp=>{
+  if(!currentItems.length){
+    grid.innerHTML = `<div class="spec-empty" style="grid-column:1/-1;">종류와 세부 규격을 먼저 선택하세요.</div>`;
+    return;
+  }
+  grid.innerHTML = currentItems.map(item=>{
+    const tip = esc(tipFor(item));
+    if(item.type==='numeric'){
+      return `<div class="m-field">
+        <label><span class="lbl-text">${item.label}</span><span class="info-icon" data-tip="${tip}" tabindex="0">i</span></label>
+        <input type="number" step="any" data-key="${item.key}" placeholder="값 입력">
+        <div class="hint">기준: ${specHint(item)}</div>
+      </div>`;
+    }
+    return `<div class="m-field qual">
+      <label><span class="lbl-text">${item.label}</span><span class="info-icon" data-tip="${tip}" tabindex="0">i</span></label>
+      <div class="qual-toggle" data-key="${item.key}">
+        <button type="button" class="pass" data-choice="pass">적합</button>
+        <button type="button" class="fail" data-choice="fail">부적합</button>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('input[data-key]').forEach(inp=>{
     inp.addEventListener('input', ()=>{
-      const spec = specItems.find(s=>s.key===inp.dataset.key);
-      const r = judge(inp.value, spec);
+      const item = currentItems.find(i=>i.key===inp.dataset.key);
+      const r = judge(inp.value, item);
       inp.classList.remove('ok','bad');
       if(r==='pass') inp.classList.add('ok');
       if(r==='fail') inp.classList.add('bad');
+    });
+  });
+  grid.querySelectorAll('.qual-toggle').forEach(tg=>{
+    tg.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const key = tg.dataset.key;
+        qualChoice[key] = (qualChoice[key]===btn.dataset.choice) ? null : btn.dataset.choice;
+        tg.querySelectorAll('button').forEach(b=>b.classList.toggle('active', qualChoice[key]===b.dataset.choice));
+      });
     });
   });
 }
@@ -722,51 +814,77 @@ document.querySelectorAll('.cat-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     selectedCat = btn.dataset.cat;
     document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active', b===btn));
+    selectedGradeId = null;
+    currentItems = [];
+    qualChoice = {};
+    renderGradeSelect();
+    renderSpecCard();
+    renderMeasureGrid();
   });
 });
 document.getElementById('dateInput').value = todayStr();
+document.getElementById('mfgDateInput').value = todayStr();
+renderGradeSelect();
+renderSpecCard();
+renderMeasureGrid();
 
 /* ---------- judge / submit ---------- */
 document.getElementById('judgeBtn').addEventListener('click', async ()=>{
   if(!selectedCat){ alert('종류(수성/유성)를 선택하세요.'); return; }
+  if(!selectedGradeId){ alert('세부 규격(KS 기준)을 선택하세요.'); return; }
   const inspectorEl = document.getElementById('inspectorInput');
   if(!inspectorEl.value){ alert('검사자를 선택하세요.'); return; }
+  if(!currentItems.length){ alert('선택한 규격에 항목이 없습니다.'); return; }
+
   const values = {};
+  const qual = {};
   let filled = 0;
-  specItems.forEach(s=>{
-    const el = document.querySelector(`#measureGrid input[data-key="${s.key}"]`);
-    const raw = el.value;
-    if(raw===''){ values[s.key] = null; }
-    else { values[s.key] = Number(raw); filled++; }
+  currentItems.forEach(item=>{
+    if(item.type==='numeric'){
+      const el = document.querySelector(`#measureGrid input[data-key="${item.key}"]`);
+      const raw = el ? el.value : '';
+      if(raw===''){ values[item.key] = null; }
+      else { values[item.key] = Number(raw); filled++; }
+    } else {
+      const choice = qualChoice[item.key] || null;
+      qual[item.key] = choice;
+      if(choice) filled++;
+    }
   });
   if(filled===0){ alert('측정값을 최소 1개 이상 입력하세요.'); return; }
 
   const results = {};
   let failCount = 0;
-  specItems.forEach(s=>{
-    const r = judge(values[s.key], s);
-    results[s.key] = r;
+  currentItems.forEach(item=>{
+    const r = item.type==='numeric' ? judge(values[item.key], item) : (qual[item.key] || null);
+    results[item.key] = r;
     if(r==='fail') failCount++;
   });
   const overall = failCount===0 ? 'pass' : 'fail';
-  const unfilled = specItems.length - filled;
+  const unfilled = currentItems.length - filled;
 
   const nameEl = document.getElementById('nameInput');
   const typeEl = document.getElementById('typeInput');
+  const mfgDateEl = document.getElementById('mfgDateInput');
   const dateEl = document.getElementById('dateInput');
-  const sampleName = nameEl.value.trim() || `${selectedCat}-${(dateEl.value||todayStr()).replace(/-/g,'')}-${String(samples.length+1).padStart(3,'0')}`;
+  const grade = findGrade(selectedCat, selectedGradeId);
+  const sampleName = nameEl.value.trim() || `${selectedCat}-${(mfgDateEl.value||todayStr()).replace(/-/g,'')}-${String(samples.length+1).padStart(3,'0')}`;
 
   const sample = {
     sampleName,
     category: selectedCat,
+    gradeId: selectedGradeId,
+    gradeLabel: grade ? grade.label : selectedGradeId,
     type: typeEl.value.trim() || '미지정',
     inspector: inspectorEl.value,
+    mfgDate: mfgDateEl.value || todayStr(),
     date: dateEl.value || todayStr(),
     values,
+    qual,
     results,
     overall,
     unfilled,
-    specSnapshot: clone(specItems),
+    specSnapshot: clone(currentItems),
     createdAt: new Date().toISOString(),
   };
 
@@ -781,27 +899,28 @@ document.getElementById('judgeBtn').addEventListener('click', async ()=>{
     </div>`;
 
   nameEl.value = '';
-  document.querySelectorAll('#measureGrid input').forEach(i=>{ i.value=''; i.classList.remove('ok','bad'); });
+  qualChoice = {};
+  renderMeasureGrid();
 });
 
-/* ---------- stats ---------- */
+/* ---------- stats (제조일 기준) ---------- */
 function currentCalMonthPrefix(){
   const y = calMonth.getFullYear(), m = calMonth.getMonth();
   return { y, m, prefix: `${y}-${String(m+1).padStart(2,'0')}` };
 }
 function renderStats(){
   const { y, m, prefix } = currentCalMonthPrefix();
-  const monthSamples = samples.filter(s=>(s.date||'').startsWith(prefix));
-  const yearSamples = samples.filter(s=>(s.date||'').startsWith(String(y)));
+  const monthSamples = samples.filter(s=>(s.mfgDate||'').startsWith(prefix));
+  const yearSamples = samples.filter(s=>(s.mfgDate||'').startsWith(String(y)));
   const monthWater = monthSamples.filter(s=>s.category==='수성').length;
   const monthOil = monthSamples.filter(s=>s.category==='유성').length;
   const yearPass = yearSamples.filter(s=>s.overall==='pass').length;
   const yearFail = yearSamples.filter(s=>s.overall==='fail').length;
 
   const tiles = [
-    {label:`${m+1}월 샘플 제조 건수`, value: monthSamples.length, sub:`${y}년 ${m+1}월 기준`, cls:'',
+    {label:`${m+1}월 샘플 제조 건수`, value: monthSamples.length, sub:`${y}년 ${m+1}월 · 제조일 기준`, cls:'',
       extra:`<div class="stat-breakdown"><span class="pill water">수성 ${monthWater}</span><span class="pill oil">유성 ${monthOil}</span></div>`},
-    {label:`${y}년 총 검사건수`, value: yearSamples.length, sub:'연간 누적 등록 샘플', cls:'pass',
+    {label:`${y}년 총 검사건수`, value: yearSamples.length, sub:'연간 누적 등록 샘플 (제조일 기준)', cls:'pass',
       extra:`<div class="stat-breakdown"><span class="pill pass">합격 ${yearPass}</span><span class="pill fail">불합격 ${yearFail}</span></div>`},
   ];
   document.getElementById('statsRow').innerHTML = tiles.map(t=>`
@@ -831,6 +950,7 @@ async function persistInspectors(names){
   }
   renderInspectorSelect();
   renderInspectorStats();
+  renderInspectorFilterChips();
 }
 document.getElementById('inspectorAddBtn').addEventListener('click', async ()=>{
   const name = prompt('새로 추가할 검사자 이름을 입력하세요.');
@@ -868,51 +988,94 @@ document.getElementById('inspectorDelConfirm').addEventListener('click', async (
 });
 function renderInspectorStats(){
   const { y, m, prefix } = currentCalMonthPrefix();
-  document.getElementById('inspMonthLabel').textContent = `${y}년 ${m+1}월 기준`;
+  document.getElementById('inspMonthLabel').textContent = `${y}년 ${m+1}월 · 제조일 기준`;
   document.getElementById('inspectorStats').innerHTML = INSPECTORS.map(name=>{
-    const count = samples.filter(s=>s.inspector===name && (s.date||'').startsWith(prefix)).length;
+    const count = samples.filter(s=>s.inspector===name && (s.mfgDate||'').startsWith(prefix)).length;
     return `<div class="insp-tile"><div class="insp-name">${name}</div><div class="insp-count">${count}</div></div>`;
   }).join('');
 }
 
 /* ---------- history ---------- */
-function currentFilters(){
-  return {
-    cat: document.getElementById('fCat').value,
-    res: document.getElementById('fResult').value,
-    q: document.getElementById('fSearch').value.trim().toLowerCase(),
-  };
+let histInspectorFilter = 'all';
+let histCatFilter = 'all';
+let histResultFilter = 'all';
+let histPage = 1;
+const HIST_PAGE_SIZE = 10;
+
+function renderInspectorFilterChips(){
+  const box = document.getElementById('fInspector');
+  const chips = ['all', ...INSPECTORS];
+  box.innerHTML = chips.map(v=>{
+    const label = v==='all' ? '전체' : v;
+    const active = histInspectorFilter===v ? ' active' : '';
+    return `<button type="button" class="chip${active}" data-val="${esc(v)}">${label}</button>`;
+  }).join('');
+  box.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      histInspectorFilter = btn.dataset.val;
+      histPage = 1;
+      renderInspectorFilterChips();
+      renderHistory();
+    });
+  });
+}
+function wireSegGroup(id, onChange){
+  const box = document.getElementById(id);
+  box.querySelectorAll('.seg-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      box.querySelectorAll('.seg-btn').forEach(b=>b.classList.toggle('active', b===btn));
+      onChange(btn.dataset.val);
+    });
+  });
+}
+wireSegGroup('fCat', v=>{ histCatFilter=v; histPage=1; renderHistory(); });
+wireSegGroup('fResult', v=>{ histResultFilter=v; histPage=1; renderHistory(); });
+document.getElementById('fSearch').addEventListener('input', ()=>{ histPage=1; renderHistory(); });
+
+function boundTextFor(item){
+  if(!item) return '';
+  return item.type==='numeric' ? specHint(item) : (item.text||'육안 판정');
 }
 function renderHistory(){
-  const {cat,res,q} = currentFilters();
+  const q = document.getElementById('fSearch').value.trim().toLowerCase();
   let rows = samples.filter(s=>{
-    if(cat!=='all' && s.category!==cat) return false;
-    if(res!=='all' && s.overall!==res) return false;
+    if(histInspectorFilter!=='all' && s.inspector!==histInspectorFilter) return false;
+    if(histCatFilter!=='all' && s.category!==histCatFilter) return false;
+    if(histResultFilter!=='all' && s.overall!==histResultFilter) return false;
     if(q && !(s.sampleName.toLowerCase().includes(q) || (s.type||'').toLowerCase().includes(q) || (s.inspector||'').toLowerCase().includes(q))) return false;
     return true;
   });
 
+  const total = rows.length;
+  const totalPages = Math.max(1, Math.ceil(total/HIST_PAGE_SIZE));
+  if(histPage>totalPages) histPage = totalPages;
+  if(histPage<1) histPage = 1;
+  const pageRows = rows.slice((histPage-1)*HIST_PAGE_SIZE, histPage*HIST_PAGE_SIZE);
+
   const tbody = document.getElementById('histBody');
   const empty = document.getElementById('histEmpty');
-  if(rows.length===0){
+  if(total===0){
     tbody.innerHTML = '';
     empty.hidden = false;
   } else {
     empty.hidden = true;
-    tbody.innerHTML = rows.map(s=>{
-      const spec = s.specSnapshot || specItems;
-      const dots = spec.map(sp=>{
-        const r = s.results ? s.results[sp.key] : null;
-        const v = s.values ? s.values[sp.key] : null;
+    tbody.innerHTML = pageRows.map(s=>{
+      const spec = s.specSnapshot || [];
+      const dots = spec.map(item=>{
+        const r = s.results ? s.results[item.key] : null;
+        const v = item.type==='numeric' ? (s.values ? s.values[item.key] : null) : (s.qual ? s.qual[item.key] : null);
         const cls = r==='pass' ? 'pass' : r==='fail' ? 'fail' : '';
-        const title = v==null ? `${sp.label}: 미입력` : `${sp.label}: ${v}${sp.unit} (기준 ${specHint(sp)})`;
-        return `<span class="dot ${cls}" title="${title}"></span>`;
+        const shownVal = v==null ? '미입력' : (item.type==='numeric' ? v : (v==='pass'?'적합':'부적합'));
+        const title = `${item.label}: ${shownVal} (기준 ${boundTextFor(item)})`;
+        return `<span class="dot ${cls}" title="${esc(title)}"></span>`;
       }).join('');
       return `<tr>
         <td>${s.sampleName}</td>
         <td><span class="pill ${s.category==='수성'?'water':'oil'}">${s.category}</span></td>
+        <td style="font-size:11.5px;color:var(--text-dim);">${s.gradeLabel||'—'}</td>
         <td>${s.type||'—'}</td>
         <td>${s.inspector||'—'}</td>
+        <td style="font-family:'IBM Plex Mono',monospace;">${s.mfgDate||''}</td>
         <td style="font-family:'IBM Plex Mono',monospace;">${s.date||''}</td>
         <td><div class="dots">${dots}</div></td>
         <td><span class="pill ${s.overall}">${s.overall==='pass'?'합격':'불합격'}</span>${s.unfilled>0?'<span class="note-tag">일부 미입력</span>':''}</td>
@@ -926,13 +1089,25 @@ function renderHistory(){
     });
   }
 
+  const pager = document.getElementById('histPager');
+  if(total<=HIST_PAGE_SIZE){
+    pager.innerHTML = '';
+  } else {
+    pager.innerHTML = `
+      <button type="button" id="histPrevBtn" ${histPage<=1?'disabled':''}>‹ 이전</button>
+      <span>페이지 ${histPage} / ${totalPages} (총 ${total}건)</span>
+      <button type="button" id="histNextBtn" ${histPage>=totalPages?'disabled':''}>다음 ›</button>`;
+    const prevBtn = document.getElementById('histPrevBtn');
+    const nextBtn = document.getElementById('histNextBtn');
+    if(prevBtn) prevBtn.addEventListener('click', ()=>{ histPage--; renderHistory(); });
+    if(nextBtn) nextBtn.addEventListener('click', ()=>{ histPage++; renderHistory(); });
+  }
+
   const types = [...new Set(samples.map(s=>s.type).filter(Boolean))];
   document.getElementById('typeList').innerHTML = types.map(t=>`<option value="${t}"></option>`).join('');
 }
-['fCat','fResult'].forEach(id=>document.getElementById(id).addEventListener('change', renderHistory));
-document.getElementById('fSearch').addEventListener('input', renderHistory);
 
-document.getElementById('footnote').textContent = '항목별 결과 점(dot)에 마우스를 올리면 측정값과 기준을 확인할 수 있습니다.';
+document.getElementById('footnote').textContent = '항목명 옆 i 아이콘에 마우스를 올리면 시험방법 설명을, 항목별 결과 점(dot)에 마우스를 올리면 측정값과 기준을 확인할 수 있습니다.';
 
 initStore();
 </script>
